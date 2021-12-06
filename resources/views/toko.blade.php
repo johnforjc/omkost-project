@@ -34,8 +34,8 @@
 
                                 <div class="row align-items-left">
                                     <div class="col-lg-4">
-                                        <h6>Jenis toko</h6>
                                         <div class="form-group">
+                                            <h6>Jenis toko</h6>
                                             <div class="simple-input">
                                                 <select id="seljenistoko" class="form-control">
                                                     <option value="ac">AC</option>
@@ -44,6 +44,16 @@
                                                     <option value="mebel">Mebel/Furniture</option>
                                                 </select>
                                             </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <h6>Nama</h6>
+                                            <input type="text" class="form-control" placeholder="Sumber Jaya" id="txtnama1">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <h6>Kota</h6>
+                                            <input type="text" class="form-control" placeholder="Surabaya" id="txtkota">
                                         </div>
     
                                         <div id = "divcek" class = "collapse show">
@@ -63,12 +73,6 @@
                                         <div id = "divtambah" class = "collapse">
                                             <div class="form-group">
                                                 <div class="input-with-icon">
-                                                    <h6>Kota</h6>
-                                                    <input type="text" class="form-control" placeholder="Surabaya"
-                                                    id="txtkota">
-                                                    <h6>Nama</h6>
-                                                    <input type="text" class="form-control" placeholder="Sumber Jaya"
-                                                    id="txtnama1">
                                                     <h6>Telp</h6>
                                                     <input type="text" class="form-control" placeholder="081xxxxxxxxx"
                                                     id="txttelp1">
@@ -202,11 +206,13 @@
         {
             $("#divcek").collapse('show');
             $("#divtambah").collapse('hide');
+            clearinput();
         }
         function tabtambah()
         {
             $("#divcek").collapse('hide');
             $("#divtambah").collapse('show');
+            clearinput();
         }
         function clearinput()
         {
@@ -236,7 +242,7 @@
                     //submit_by:"{{ Cookie::get('email') }}",
                 },
                 success : function(response){
-                    //var data = response.data;
+                    //let data = response.data;
                     if(response.status)
                     {
                         alert(response.message);
@@ -263,44 +269,31 @@
                 headers: {
                     "Authorization" : "Bearer {{ Cookie::get('api_token') }}"
                 },
-                //data : {
-                //    cari  :$('#seljenistoko').val()
-                //},
+                data : {
+                   jenis  :$('#seljenistoko').val()
+                },
                 success : function(response){
-                    var data = response.data;
+                    let data = response.data;
                     if(response.status)
                     {
                         //alert(response.message);
-                        var html = '';
-                        var html2 = '';
-                        var i;
-                        for(i=0; i<data.length; i++){
-                            
-                            html += '<tr>'+
-                                    '<td style="text-align:left;">'+data[i].kota+'</td>'+
-                                    '<td style="text-align:left;">'+data[i].nama+'</td>'+
-                                    '<td style="text-align:left;">'+data[i].telp+'</td>'+
-                                    '<td style="text-align:left;">'+data[i].alamat+'</td>'+
-                                    '<td style="text-align:left;">'+data[i].keterangan+'</td>'+
-                                    '<td style="text-align:left;">'+data[i].submit_by+'</td>'+
-                                    '</tr>';
-                            /*
-                            html2 += '<tr>'+
-                                        '<td class="dashboard_propert_wrapper">'+
-                                            '<img src="https://via.placeholder.com/1400x720" alt="">'+
-                                            '<div class="title">'+
-                                                '<h4><a href="#">'+data[i].identitas+'</a></h4>'+
-                                                '<span id="spannama">Nama : '+data[i].nama+'</span>'+
-                                                '<span>Telp : '+data[i].telp+'</span>'+
-                                                '<span>Keterangan : '+data[i].keterangan+'</span>'+
-                                            '</div>'+
-                                        '</td>'+
-                                    '</tr>';
-                            */
+                        let html = '';
+                        if( data.length == 0 ){
+                            html = `<h3>Data tidak ditemukan</h3>`
+                        } else {
+                            for(let i=0; i<data.length; i++){
+                                html += `<tr>
+                                            <td style="text-align:left;">${data[i].kota}</td>
+                                            <td style="text-align:left;">${data[i].nama}</td>
+                                            <td style="text-align:left;">${data[i].telp}</td>
+                                            <td style="text-align:left;">${data[i].alamat}</td>
+                                            <td style="text-align:left;">${data[i].keterangan}</td>
+                                            <td style="text-align:left;">${data[i].submit_by}</td>
+                                        </tr>`;
+                            }
                         }
+                        
                         $('#dttoko2').html(html);
-                        //$('#dttoko2').html(html2);
-                        //document.getElementById('spannama').innerHTML += "tes";
                     }
                     else
                     {
@@ -313,6 +306,5 @@
             });
         }
 
-        window.onload=getToko();
 	</script>
 @stop

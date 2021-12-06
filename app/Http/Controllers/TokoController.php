@@ -20,27 +20,27 @@ class TokoController extends Controller
         $user = Auth::user();
         
         $request->validate([
-            //'jenis'=>'required',
-            //'identitas'=>'required',
-            //'bukti' => 'image',
-        ]);        
-        
+            'jenis'         => 'required',
+            'kota'          => 'required',
+            'nama'          => 'required',
+            'telp'          => 'required',
+            'alamat'        => 'required',
+            'keterangan'    => 'required',
+        ]);   
+
         Toko::create([
-            'jenis' => $request['jenis'],
-            'kota' => $request['kota'],
-            'nama' => $request['nama'],
-            'telp' => $request['telp'],
-            'alamat' => $request['alamat'],
-            'keterangan' => $request['keterangan'],
-            'submit_by' => $user->email,
-            'submit_at' => Carbon::now(),
+            'jenis'         => $request['jenis'],
+            'kota'          => $request['kota'],
+            'nama'          => $request['nama'],
+            'telp'          => $request['telp'],
+            'alamat'        => $request['alamat'],
+            'keterangan'    => $request['keterangan'],
+            'submit_by'     => $user->email,
+            'submit_at'     => Carbon::now(),
         ]);
 
-        //$imageName = time().'.'.$request->image->extension();  
-        //$request->image->move(public_path('images'), $imageName);
-
         $response['status'] = true;
-        $response['message'] = 'Data Toko tersimpan';
+        $response['message'] = 'Data Toko Tersimpan';
 
         return response()->json($response, 200);
     }
@@ -48,18 +48,18 @@ class TokoController extends Controller
 
     public function get(Request $request)
     {
-        $toko = Toko::all();
-        //Toko::select('*');
-        if($request->filled('cari'))
+        if(!$request->filled('jenis'))
         {
-            $toko = Toko::where('identitas', 'like', '%'.request('cari').'%')
-            ->orWhere('nama', 'like', '%'.request('cari').'%')
-            ->get();
+            $response['status'] = false;
+            $response['message'] = 'Jenis Toko tidak ditemukan';
+            return response()->json($response);
         }
-        //$toko = Toko::get();
-        //$toko = Toko::where('Tokoid', request('Tokoid'))->get(),200,[]);
 
-        //$user = User::where('email', $request->email)->first();
+        $toko = Toko::where('nama', 'like', '%'.request('nama').'%')
+                    ->where('kota', 'like', '%'.request('kota').'%')
+                    ->where('jenis', 'like', '%'.request('jenis').'%')
+                    ->get();
+
         $response['status'] = true;
         $response['message'] = 'Data Toko diterima';
         $response['data'] = $toko;
@@ -72,28 +72,26 @@ class TokoController extends Controller
         $user = Auth::user();
         
         $request->validate([
-            'jenis'=>'required',
-            'kota'=>'required',
-            'identitas'=>'required',
-            'nama'=>'required',
-            'telp'=>'required',
-            'keterangan'=>'required',
-            'bukti'=>'required',
+            'jenis'         =>'required',
+            'kota'          =>'required',
+            'nama'          =>'required',
+            'telp'          =>'required',
+            'alamat'        =>'required',
+            'keterangan'    =>'required',
         ]);   
 
         $toko = Toko::find($request->id);
 
-        $toko->jenis =  $request->get('jenis');
-        $toko->identitas = $request->get('identitas');
-        $toko->nama = $request->get('nama');
-        $toko->telp = $request->get('telp');
-        $toko->keterangan = $request->get('keterangan');
-        $toko->bukti = $request->get('bukti');
+        $toko->jenis        = $request->get('jenis');
+        $toko->kota         = $request->get('kota');
+        $toko->nama         = $request->get('nama');
+        $toko->telp         = $request->get('telp');
+        $toko->alamat       = $request->get('alamat');
+        $toko->keterangan   = $request->get('keterangan');
         $toko->save();
 
         $response['status'] = true;
         $response['message'] = 'Data Toko update';
-        //$response['data'] = $toko;
 
         return response()->json($response, 200);
     }

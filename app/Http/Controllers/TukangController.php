@@ -20,46 +20,43 @@ class TukangController extends Controller
         $user = Auth::user();
         
         $request->validate([
-            //'jenis'=>'required',
-            //'identitas'=>'required',
-            //'bukti' => 'image',
+            'jenis'     =>'required',
+            'kota'      =>'required',
+            'nama'      =>'required',
         ]);        
         
         Tukang::create([
-            'jenis' => $request['jenis'],
-            'kota' => $request['kota'],
-            'nama' => $request['nama'],
-            'telp' => $request['telp'],
-            'alamat' => $request['alamat'],
-            'keterangan' => $request['keterangan'],
-            'submit_by' => $user->email,
-            'submit_at' => Carbon::now(),
+            'jenis'         => $request['jenis'],
+            'kota'          => $request['kota'],
+            'nama'          => $request['nama'],
+            'telp'          => $request['telp'],
+            'alamat'        => $request['alamat'],
+            'keterangan'    => $request['keterangan'],
+            'submit_by'     => $user->email,
+            'submit_at'     => Carbon::now(),
         ]);
-
-        //$imageName = time().'.'.$request->image->extension();  
-        //$request->image->move(public_path('images'), $imageName);
 
         $response['status'] = true;
         $response['message'] = 'Data Tukang tersimpan';
 
-        return response()->json($response, 200);
+        return response()->json($response, 201);
     }
 
 
     public function get(Request $request)
     {
-        $tukang = Tukang::all();
-        //Tukang::select('*');
-        if($request->filled('cari'))
+        if(!$request->filled('jenis'))
         {
-            $tukang = Tukang::where('identitas', 'like', '%'.request('cari').'%')
-            ->orWhere('nama', 'like', '%'.request('cari').'%')
-            ->get();
+            $response['status'] = true;
+            $response['message'] = 'Tolong masukkan jenis tukang yang dicari';
+            return response()->json($response, 200);
         }
-        //$tukang = Tukang::get();
-        //$tukang = Tukang::where('Tukangid', request('Tukangid'))->get(),200,[]);
 
-        //$user = User::where('email', $request->email)->first();
+        $tukang = Tukang::where('nama', 'like', '%'.request('nama').'%')
+                            ->where('kota', 'like', '%'.request('kota').'%')
+                            ->where('jenis', 'like', '%'.request('jenis').'%')
+                            ->get();
+
         $response['status'] = true;
         $response['message'] = 'Data Tukang diterima';
         $response['data'] = $tukang;
@@ -69,33 +66,32 @@ class TukangController extends Controller
 
     public function update(Request $request)
     {
+
         $user = Auth::user();
         
         $request->validate([
-            'jenis'=>'required',
-            'kota'=>'required',
-            'identitas'=>'required',
-            'nama'=>'required',
-            'telp'=>'required',
-            'keterangan'=>'required',
-            'bukti'=>'required',
-        ]);   
+            'jenis'     =>'required',
+            'kota'      =>'required',
+            'nama'      =>'required',
+        ]);        
 
+        // Cari tukang yang akan diupdate
         $tukang = Tukang::find($request->id);
 
-        $tukang->jenis =  $request->get('jenis');
-        $tukang->identitas = $request->get('identitas');
-        $tukang->nama = $request->get('nama');
-        $tukang->telp = $request->get('telp');
-        $tukang->keterangan = $request->get('keterangan');
-        $tukang->bukti = $request->get('bukti');
+        // Simpan perubahan dari form
+        $tukang->jenis      = $request['jenis'];
+        $tukang->kota       = $request['kota'];
+        $tukang->nama       = $request['nama'];
+        $tukang->telp       = $request['telp'];
+        $tukang->alamat     = $request['alamat'];
+        $tukang->keterangan = $request['keterangan'];
+        
         $tukang->save();
 
         $response['status'] = true;
-        $response['message'] = 'Data Tukang update';
-        //$response['data'] = $tukang;
+        $response['message'] = 'Data Tukang berhasil diupdate';
 
-        return response()->json($response, 200);
+        return response()->json($response, 201);
     }
 
     public function delete(Tukang $tukang)
