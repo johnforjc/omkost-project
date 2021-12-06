@@ -22,8 +22,21 @@ class BlacklistController extends Controller
         $request->validate([
             'jenis'=>'required',
             'identitas'=>'required',
-            'bukti' => 'image',
-        ]);        
+            // 'bukti' => 'required',
+        ]);
+
+        // dd($request->file('bukti'));
+        // return response()->json('succes', 200);
+        
+        $imagePath = "Tidak masuk";
+
+        if($request->file('bukti')) {
+            $imagePath = $request->file('bukti');
+            // $imageName = $imagePath->getClientOriginalName() . '-' . time() . '.' . $imagePath->extension();
+
+            // $request->file('bukti')->move(public_path('image/'), $imageName);
+        }
+
         /*
         $blacklist = new Contact([
             'first_name' => $request->get('first_name'),
@@ -43,7 +56,7 @@ class BlacklistController extends Controller
             'nama' => $request['nama'],
             'telp' => $request['telp'],
             'keterangan' => $request['keterangan'],
-            'bukti' => $request['bukti'],
+            // 'bukti' => $request->bukti,
             'submit_by' => $user->email,
             'submit_at' => Carbon::now(),
         ]);
@@ -62,10 +75,16 @@ class BlacklistController extends Controller
     {
         $blacklist = Blacklist::all();
         //Blacklist::select('*');
+
+        $error = $request->validate([
+            'jenis'=>'required',
+            'cari'=>'required',
+        ]);
+
         if($request->filled('cari'))
         {
             $blacklist = Blacklist::where('identitas', 'like', '%'.request('cari').'%')
-            ->orWhere('nama', 'like', '%'.request('cari').'%')
+            ->orWhere('nama', 'like', '%'.request('cari').'%')->where('jenis', 'like', request('jenis'))
             ->get();
         }
         //$blacklist = Blacklist::get();
@@ -108,6 +127,32 @@ class BlacklistController extends Controller
         //$response['data'] = $blacklist;
 
         return response()->json($response, 200);
+    }
+
+    public function validateBacklist(Request $request){
+        // validasi blacklist oleh admin
+        $user = Auth::user();
+        
+        if(!$user->isAdmin){
+            $response["status"] = false;
+            $response["message"] = 'Maaf, anda tidak berhak untuk melakukan validasi';
+            return response()->json($response, 401);
+        }
+
+        $request->validate([
+            'id' => 'required'
+        ]); 
+
+        $blacklist = Blacklist::find($request->id);
+
+        $blacklist->validate_at = time();
+        $blacklist->validate_by = $user->email;
+        $blacklist->save();
+
+        $response['status'] = true;
+        $response["message"] = 'Data telah divalidasi';
+
+        return response()->json($response, 201);
     }
 
     public function delete(Blacklist $blacklist)

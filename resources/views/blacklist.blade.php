@@ -34,8 +34,74 @@
 
                                 <div class="row align-items-left">
                                     <div class="col-lg-4">
-                                        <h6>Jenis Blacklist</h6>
-                                        <div class="form-group">
+
+                                        <form id="divtambah" class="collapse" enctype= "multipart/form-data" onsubmit="setBlacklist()">
+                                            @csrf
+                                            <div class="form-group">
+                                                <h6>Jenis Blacklist</h6>
+
+                                                <div class="simple-input">
+                                                    <select id="seljenisblacklist" class="form-control">
+                                                        <option value="pencari">Pencari Kost</option>
+                                                        <option value="pegawai">Pegawai Kost</option>
+                                                        <option value="tukang">Tukang</option>
+                                                        <option value="toko">Toko</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <!-- <div id = "divtambah" class = "collapse"> -->
+                                            <div class="form-group">
+                                                <div class="input-with-icon">
+                                                    <h6>Kota</h6>
+                                                    <input type="text" class="form-control" placeholder="Surabaya"
+                                                    id="txtkota">
+                                                    <h6>No Identitas</h6>
+                                                    <input type="text" class="form-control" placeholder="357xxxxxxxxxx"
+                                                    id="txtidentitas">
+                                                    <h6>Nama</h6>
+                                                    <input type="text" class="form-control" placeholder="Rudy"
+                                                    id="txtnama1">
+                                                    <h6>Telp</h6>
+                                                    <input type="text" class="form-control" placeholder="081xxxxxxxxx"
+                                                    id="txttelp1">
+                                                    <h6>Keterangan</h6>
+                                                    <input type="text" class="form-control" placeholder="Kabur tidak bayar kos"
+                                                    id="txtketerangan">
+                                                    <h6>Bukti</h6>
+                                                    <input type="file" class="form-control"
+                                                    id="txtbukti">
+                                                </div>
+                                                <button id="btnsimpan" type="submit" class="btn btn-theme full-width bg-2">Simpan</button>
+                                            </div>
+                                        </form>
+
+                                        <form action="" method="get" id = "divcek" class = "collapse show">
+                                            <div class="form-group">
+                                                <h6>Jenis Blacklist</h6>
+                                                <div class="simple-input">
+                                                    <select id="jenis-pencarian" class="form-control">
+                                                        <option value="pencari">Pencari Kost</option>
+                                                        <option value="pegawai">Pegawai Kost</option>
+                                                        <option value="tukang">Tukang</option>
+                                                        <option value="toko">Toko</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <h6>Cari Melalui</h6>
+                                            <div class="form-group">
+                                                <div class="input-with-icon">
+                                                    <input type="text" class="form-control" placeholder="KTP / Nama"
+                                                    id="txtcari" oninput="getBlacklist()" autofocus>
+                                                    <i class="ti-search"></i>
+                                                </div>
+                                            </div>
+                                            <button id="btncek" type="button" class="btn btn-theme full-width bg-2" onclick="getBlacklist()">Cek</button>
+                                        </div>
+                                        </form>
+
+                                        <!-- <div class="form-group">
                                             <div class="simple-input">
                                                 <select id="seljenisblacklist" class="form-control">
                                                     <option value="pencari">Pencari Kost</option>
@@ -44,21 +110,20 @@
                                                     <option value="toko">Toko</option>
                                                 </select>
                                             </div>
-                                        </div>
     
                                         <div id = "divcek" class = "collapse show">
                                             <h6>Cari Melalui</h6>
                                             <div class="form-group">
                                                 <div class="input-with-icon">
                                                     <input type="text" class="form-control" placeholder="KTP / Nama"
-                                                    id="txtcari">
+                                                    id="txtcari" oninput="getBlacklist()" autofocus>
                                                     <i class="ti-search"></i>
                                                 </div>
                                             </div>
                                             <button id="btncek" type="button" class="btn btn-theme full-width bg-2" onclick="getBlacklist()">Cek</button>
-                                        </div>
+                                        </div> -->
     
-                                        <div id = "divtambah" class = "collapse">
+                                        <!-- <div id = "divtambah" class = "collapse">
                                             <div class="form-group">
                                                 <div class="input-with-icon">
                                                     <h6>Kota</h6>
@@ -82,7 +147,7 @@
                                                 </div>
                                                 <button id="btnsimpan" type="button" class="btn btn-theme full-width bg-2" onclick="setBlacklist()">Simpan</button>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 <!--
                                     <div class="col-lg-8">
@@ -128,14 +193,6 @@
                                     </tr>-->
                                 </tbody>
                             </table>
-
-                            <!--
-                            <div class="row">
-                                <div class="col-lg-12 col-md-12 col-sm-12 text-center">
-                                    <a href="#" class="btn btn-theme arrow-btn bg-2">Lihat Semua<span><i class="ti-arrow-right"></i></span></a>
-                                </div>
-                            </div>
-                        -->
                             <!-- Pagination -->
                             <!--
 							<div class="row">
@@ -163,17 +220,6 @@
 							</div>
                         -->
                         </div>
-                        
-                        <!--
-                        <div class="row">
-                            <div class="col-md-12 col-lg-12 mt-4">
-                                <footer class="text-center">
-                                    <p class="mb-0">© 2020 Verio. Designd By <a href="#">Pexel Experts</a> All Rights Reserved</p>
-                                </footer>
-                            </div>
-                        </div>
-                    -->
-                        <!-- row -->
                     
                     </div>
                 </div>
@@ -209,24 +255,45 @@
 
         function setBlacklist()
 		{
+            event.preventDefault();
+
+            let formElement = document.querySelector('form#divtambah');
+
+            let newFormData = new FormData(formElement);
+
+            for (let value of newFormData.values()) {
+                console.log(value);
+            }
+
+            return;
+
+            // console.log(newFormData.values('txtkota'));
+            // return;
+
+            // console.log('masuk');
+
             $.ajax({
                 type  : 'POST',
                 url   : "{{ url('/api/setBlacklist') }}",
                 dataType : 'json',
                 headers: {
-                    "Authorization" : "Bearer {{ Cookie::get('api_token') }}"
+                    "Authorization" : "Bearer {{ Cookie::get('api_token') }}",
+
                 },
+                // data    : newFormData,
                 data : {
                     jenis       :$('#seljenisblacklist').val(), 
                     kota        :$('#txtkota').val(), 
                     identitas   :$('#txtidentitas').val(), 
                     nama        :$('#txtnama1').val(), 
                     telp        :$('#txttelp1').val(), 
-                    keterangan  :$('#txtketerangan').val()
+                    keterangan  :$('#txtketerangan').val(),
+                    bukti       :$('#txtbukti').val(),
+
                     //submit_by:"{{ Cookie::get('email') }}",
                 },
                 success : function(response){
-                    //var data = response.data;
+                    let data = response.data;
                     if(response.status)
                     {
                         alert(response.message);
@@ -239,67 +306,68 @@
                     }
                 },
                 error: function(err){
+                    console.log("masuk sini")
                     alert("Error, hubungi admin")
                 }
             });
         }
 
-        function getBlacklist()
-		{
-            $.ajax({
-                type  : 'GET',
-                url   : "{{ url('/api/getBlacklist') }}",
-                dataType : 'json',
-                headers: {
-                    "Authorization" : "Bearer {{ Cookie::get('api_token') }}"
-                },
-                data : {
-                    cari  :$('#txtcari').val()
-                },
-                success : function(response){
-                    var data = response.data;
-                    if(response.status)
-                    {
-                        //alert(response.message);
-                        var html = '';
-                        var html2 = '';
-                        var i;
-                        for(i=0; i<data.length; i++){
-                            /*
-                            html += '<tr>'+
-                                    '<td style="text-align:left;">'+data[i].kota+'</td>'+
-                                    '<td style="text-align:left;">'+data[i].identitas+'</td>'+
-                                    '<td style="text-align:left;">'+data[i].nama+'</td>'+
-                                    '<td style="text-align:left;">'+data[i].telp+'</td>'+
-                                    '<td style="text-align:left;">'+data[i].keterangan+'</td>'+
-                                    '</tr>';
-                            */
-                            html2 += '<tr>'+
-                                        '<td class="dashboard_propert_wrapper">'+
-                                            '<img src="https://via.placeholder.com/1400x720" alt="">'+
-                                            '<div class="title">'+
-                                                '<h4><a href="#">'+data[i].identitas+'</a></h4>'+
-                                                '<span id="spannama">Nama : '+data[i].nama+'</span>'+
-                                                '<span>Telp : '+data[i].telp+'</span>'+
-                                                '<span>Keterangan : '+data[i].keterangan+'</span>'+
-                                            '</div>'+
-                                        '</td>'+
-                                    '</tr>';
+        async function getBlacklist() {
+            // Check if input's length more than 5 character, then autosearch is on
+            // This make the server not heavy query if the input is very short for auto search
+
+            // Make HTML Element using Javascript for blacklist
+            let html2 = "";
+            if ($("#txtcari").val().length > 5) {
+                // Make a async funtion for this fecth function from server
+                await $.ajax({
+                    type: "GET",
+                    url: "{{ url('/api/getBlacklist') }}",
+                    dataType: "json",
+                    headers: {
+                        Authorization: "Bearer {{ Cookie::get('api_token') }}"
+                    },
+                    data: {
+                        jenis: $('#jenis-pencarian').val(),
+                        cari: $("#txtcari").val()
+                    },
+                    success: function(response) {
+                        let data = response.data;
+                        if (response.status) {
+                            // Make sure the data of blacklist minimal 1
+                            if (data.length !== 0) {
+                                for (let i = 0; i < data.length; i++) {
+                                    html2 += `<tr>
+                                                <td class="dashboard_propert_wrapper">
+                                                    <img src="https://via.placeholder.com/1400x720" alt="">
+                                                    <div class="title">
+                                                        <h3 id="spannama">${data[i].nama}</h3>
+                                                        <h4><a href="#">${data[i].identitas}</a></h4>
+                                                        <span>Telp : ${data[i].telp}</span>
+                                                        <span>Keterangan : ${data[i].keterangan}</span>
+                                                    </div>
+                                                </td>
+                                            </tr>`;
+                                }
+                            } else {
+                                // Give a feedback for user if doesnt exist data with input
+
+                                html2 =
+                                    "<h4>Nama tidak ditemukan di daftar blacklist.</h4>";
+                            }
+                        } else {
+                            alert(response.message);
                         }
-                        $('#dtblacklist').html(html);
-                        $('#dtblacklist2').html(html2);
-                        //document.getElementById('spannama').innerHTML += "tes";
+                    },
+                    error: function(err) {
+                        alert("Error, hubungi admin");
                     }
-                    else
-                    {
-                        alert(response.message);
-                    }
-                },
-                error: function(err){
-                    alert("Error, hubungi admin")
-                }
-            });
+                });
+            }
+
+            $("#dtblacklist2").html(html2);
         }
+
 
         window.onload=getBlacklist();
 	</script>

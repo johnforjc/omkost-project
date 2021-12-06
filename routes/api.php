@@ -27,6 +27,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     
     Route::post('setBlacklist', 'BlacklistController@set');
     Route::get('getBlacklist', 'BlacklistController@get');
+    Route::put('validateBacklist', 'BlacklistController@validateBacklist');
 
     Route::post('setTukang', 'TukangController@set');
     Route::get('getTukang', 'TukangController@get');
