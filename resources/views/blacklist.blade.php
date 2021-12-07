@@ -32,74 +32,90 @@
                                 </div>
                                 </br></br>
 
-                                <div class="row align-items-left">
-                                    <div class="col-lg-4">
+                                <div class="align-items-left collapse show" id="cariBlacklistSection">
+                                    <div class="row d-flex justify-content-between form-group">
+                                        
+                                        <div class="col-lg-6 mb-2">
+                                            <h6>Jenis Blacklist</h6>
+                                            <div class="simple-input">
+                                                <select id="cariJenisBlacklist" class="form-control">
+                                                    <option value="pencari">Pencari Kost</option>
+                                                    <option value="pegawai">Pegawai Kost</option>
+                                                    <option value="tukang">Tukang</option>
+                                                    <option value="toko">Toko</option>
+                                                </select>
+                                            </div>
+                                        </div>
 
-                                        <form id="divtambah" class="collapse" enctype= "multipart/form-data" onsubmit="setBlacklist()">
+                                        <div class="col-lg-6 mb-2">
+                                            <h6>Nama/NIK</h6>
+                                            <input type="text" class="form-control" placeholder="Rudy" id="cariNamaBlacklist" oninput="getBlacklist()">
+                                        </div>
+                                    </div>
+
+                                    <button id="btncek" type="button" class="btn btn-theme full-width bg-2" onclick="getBlacklist()">Cek</button>
+
+                                    <h3>Hasil Pencarian</h3>
+                                    <table class="property-table-wrap responsive-table bkmark">
+                                        <tbody id="dtblacklist2">
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+                                <div class="align-items-left collapse" id="tambahBlacklistSection">
+                                        <form enctype="multipart/form-data" onsubmit="setBlacklist()">
                                             @csrf
-                                            <div class="form-group">
-                                                <h6>Jenis Blacklist</h6>
+                                            <div class="row d-flex justify-content-between form-group">
+                                                <div class="col-lg-6 mb-2">
+                                                    <h6>Jenis Blacklist</h6>
+                                                    <div class="simple-input">
+                                                        <select id="tambahJenisBlacklist" class="form-control">
+                                                            <option value="pencari">Pencari Kost</option>
+                                                            <option value="pegawai">Pegawai Kost</option>
+                                                            <option value="tukang">Tukang</option>
+                                                            <option value="toko">Toko</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
 
-                                                <div class="simple-input">
-                                                    <select id="seljenisblacklist" class="form-control">
-                                                        <option value="pencari">Pencari Kost</option>
-                                                        <option value="pegawai">Pegawai Kost</option>
-                                                        <option value="tukang">Tukang</option>
-                                                        <option value="toko">Toko</option>
-                                                    </select>
+                                                <div class="col-lg-6 mb-2">
+                                                    <h6>Kota</h6>
+                                                    <input type="text" class="form-control" placeholder="Surabaya" id="tambahKotaBlacklist">
+                                                </div>
+                                                
+                                                <div class="col-lg-6 mb-2">
+                                                    <h6>No Identitas</h6>
+                                                    <input type="text" class="form-control" placeholder="357xxxxxxxxxx"id="tambahIdentitasBlacklist">
+                                                </div>
+                                                
+                                                <div class="col-lg-6 mb-2">
+                                                    <h6>Nama</h6>
+                                                    <input type="text" class="form-control" placeholder="Rudy" id="tambahNamaBlacklist">
+                                                </div>
+                                                
+                                                <div class="col-lg-6 mb-2">
+                                                    <h6>Telp</h6>
+                                                    <input type="text" class="form-control" placeholder="081xxxxxxxxx" id="tambahTelponBlacklist">
+                                                </div>
+                                                
+                                                <div class="col-lg-6 mb-2">
+                                                    <h6>Keterangan</h6>
+                                                    <input type="text" class="form-control" placeholder="Kabur tidak bayar kos" id="tambahKeteranganBlacklist">
+                                                </div>
+
+                                                <div class="col-lg-6 mb-2">
+                                                    <h6>Bukti</h6>
+                                                    <input type="file" class="form-control" id="tambahBuktiBlacklist">
                                                 </div>
                                             </div>
-
-                                            <!-- <div id = "divtambah" class = "collapse"> -->
-                                            <div class="form-group">
-                                                <div class="input-with-icon">
-                                                    <h6>Kota</h6>
-                                                    <input type="text" class="form-control" placeholder="Surabaya"
-                                                    id="txtkota">
-                                                    <h6>No Identitas</h6>
-                                                    <input type="text" class="form-control" placeholder="357xxxxxxxxxx"
-                                                    id="txtidentitas">
-                                                    <h6>Nama</h6>
-                                                    <input type="text" class="form-control" placeholder="Rudy"
-                                                    id="txtnama1">
-                                                    <h6>Telp</h6>
-                                                    <input type="text" class="form-control" placeholder="081xxxxxxxxx"
-                                                    id="txttelp1">
-                                                    <h6>Keterangan</h6>
-                                                    <input type="text" class="form-control" placeholder="Kabur tidak bayar kos"
-                                                    id="txtketerangan">
-                                                    <h6>Bukti</h6>
-                                                    <input type="file" class="form-control"
-                                                    id="txtbukti">
-                                                </div>
+                                                
+                                            <div class="form-group col">
                                                 <button id="btnsimpan" type="submit" class="btn btn-theme full-width bg-2">Simpan</button>
                                             </div>
                                         </form>
-
-                                        <form action="" method="get" id = "divcek" class = "collapse show">
-                                            <div class="form-group">
-                                                <h6>Jenis Blacklist</h6>
-                                                <div class="simple-input">
-                                                    <select id="jenis-pencarian" class="form-control">
-                                                        <option value="pencari">Pencari Kost</option>
-                                                        <option value="pegawai">Pegawai Kost</option>
-                                                        <option value="tukang">Tukang</option>
-                                                        <option value="toko">Toko</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <h6>Cari Melalui</h6>
-                                            <div class="form-group">
-                                                <div class="input-with-icon">
-                                                    <input type="text" class="form-control" placeholder="KTP / Nama"
-                                                    id="txtcari" oninput="getBlacklist()" autofocus>
-                                                    <i class="ti-search"></i>
-                                                </div>
-                                            </div>
-                                            <button id="btncek" type="button" class="btn btn-theme full-width bg-2" onclick="getBlacklist()">Cek</button>
-                                        </div>
-                                        </form>
+                                    </div>
 
                                         <!-- <div class="form-group">
                                             <div class="simple-input">
@@ -148,7 +164,6 @@
                                                 <button id="btnsimpan" type="button" class="btn btn-theme full-width bg-2" onclick="setBlacklist()">Simpan</button>
                                             </div>
                                         </div> -->
-                                    </div>
                                 <!--
                                     <div class="col-lg-8">
                                         <table class="table" id="tabelblacklist" style = "width:100%;">
@@ -170,29 +185,6 @@
                                 -->
                                 </div>
                             </div>
-                            <h3>Hasil Pencarian</h3>
-                            <table class="property-table-wrap responsive-table bkmark">
-                                <tbody id="dtblacklist2">
-                                    <!-- Item #1 
-                                    <tr>
-                                        <td class="dashboard_propert_wrapper">
-                                            <img src="https://via.placeholder.com/1400x720" alt="">
-                                            <div class="title">
-                                                <h4><a href="#">Identitas</a></h4>
-                                                <span id="spannama">Nama : </span>
-                                                <span>Telp : asdfsdfsd</span>
-                                                <span>Keterangan : </span>
-                                                <span class="table-property-price">$900 / monthly</span>
-                                            </div>
-                                        </td>-->
-                                    <!--
-                                        <td class="action">
-                                            <a href="#" class="delete"><i class="ti-close"></i> Delete</a>
-                                        </td>
-                                    
-                                    </tr>-->
-                                </tbody>
-                            </table>
                             <!-- Pagination -->
                             <!--
 							<div class="row">
@@ -236,41 +228,45 @@
         $("#sbblacklist").addClass("active");
         function tabcek()
         {
-            $("#divcek").collapse('show');
-            $("#divtambah").collapse('hide');
+            $("#cariBlacklistSection").collapse('show');
+            $("#tambahBlacklistSection").collapse('hide');
+            clearinput();
         }
         function tabtambah()
         {
-            $("#divcek").collapse('hide');
-            $("#divtambah").collapse('show');
+            $("#cariBlacklistSection").collapse('hide');
+            $("#tambahBlacklistSection").collapse('show');
+            clearinput();
         }
         function clearinput()
         {
-            $('#txtkota').val("");
-            $('#txtidentitas').val("");
-            $('#txtnama1').val("");
-            $('#txttelp1').val("");
-            $('#txtketerangan').val("");
+            $('#tambahKotaBlacklist').val("");
+            $('#tambahIdentitasBlacklist').val("");
+            $('#tambahNamaBlacklist').val("");
+            $('#tambahTelponBlacklist').val("");
+            $('#tambahKeteranganBlacklist').val("");
+            $('#tambahBuktiBlacklist').val("");
+            $('#cariNamaBlacklist').val("");
         }
 
         function setBlacklist()
 		{
             event.preventDefault();
 
-            let formElement = document.querySelector('form#divtambah');
+            // let formElement = document.querySelector('form#divtambah');
 
-            let newFormData = new FormData(formElement);
+            // let newFormData = new FormData(formElement);
 
-            for (let value of newFormData.values()) {
-                console.log(value);
-            }
+            // for (let value of newFormData.values()) {
+            //     console.log(value);
+            // }
 
-            return;
-
-            // console.log(newFormData.values('txtkota'));
             // return;
 
-            // console.log('masuk');
+            // // console.log(newFormData.values('txtkota'));
+            // // return;
+
+            // // console.log('masuk');
 
             $.ajax({
                 type  : 'POST',
@@ -282,13 +278,13 @@
                 },
                 // data    : newFormData,
                 data : {
-                    jenis       :$('#seljenisblacklist').val(), 
-                    kota        :$('#txtkota').val(), 
-                    identitas   :$('#txtidentitas').val(), 
-                    nama        :$('#txtnama1').val(), 
-                    telp        :$('#txttelp1').val(), 
-                    keterangan  :$('#txtketerangan').val(),
-                    bukti       :$('#txtbukti').val(),
+                    jenis       :$('#tambahJenisBlacklist').val(), 
+                    kota        :$('#tambahKotaBlacklist').val(), 
+                    identitas   :$('#tambahIdentitasBlacklist').val(), 
+                    nama        :$('#tambahNamaBlacklist').val(), 
+                    telp        :$('#tambahTelponBlacklist').val(), 
+                    keterangan  :$('#tambahKeteranganBlacklist').val(),
+                    bukti       :$('#tambahBuktiBlacklist').val(),
 
                     //submit_by:"{{ Cookie::get('email') }}",
                 },
@@ -318,7 +314,9 @@
 
             // Make HTML Element using Javascript for blacklist
             let html2 = "";
-            if ($("#txtcari").val().length > 5) {
+
+            console.log($("#cariNamaBlacklist").val());
+            if ($("#cariNamaBlacklist").val().length > 5) {
                 // Make a async funtion for this fecth function from server
                 await $.ajax({
                     type: "GET",
@@ -328,8 +326,8 @@
                         Authorization: "Bearer {{ Cookie::get('api_token') }}"
                     },
                     data: {
-                        jenis: $('#jenis-pencarian').val(),
-                        cari: $("#txtcari").val()
+                        jenis: $('#cariJenisBlacklist').val(),
+                        cari: $("#cariNamaBlacklist").val()
                     },
                     success: function(response) {
                         let data = response.data;
@@ -353,7 +351,7 @@
                                 // Give a feedback for user if doesnt exist data with input
 
                                 html2 =
-                                    "<h4>Nama tidak ditemukan di daftar blacklist.</h4>";
+                                    "<h4>Nama atau NIK tidak ditemukan di daftar blacklist.</h4>";
                             }
                         } else {
                             alert(response.message);
@@ -367,8 +365,5 @@
 
             $("#dtblacklist2").html(html2);
         }
-
-
-        window.onload=getBlacklist();
 	</script>
 @stop
