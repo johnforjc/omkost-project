@@ -249,6 +249,68 @@
             $('#cariNamaBlacklist').val("");
         }
 
+        function validateBlacklist(){
+            $.ajax({
+                type  : 'PUT',
+                url   : "{{ url('/api/validateBacklist') }}",
+                dataType : 'json',
+                headers: {
+                    "Authorization" : "Bearer {{ Cookie::get('api_token') }}",
+                },
+                data: {
+                    id : '1'
+                },
+                success : function(response){
+                    let data = response.data;
+                    if(response.status)
+                    {
+                        alert(response.message);
+                        getBlacklist();
+                        clearinput();
+                    }
+                    else
+                    {
+                        alert(response.message);
+                    }
+                },
+                error: function(err){
+                    console.log("masuk sini")
+                    alert("Error, hubungi admin")
+                }
+            });
+        }
+
+        function deleteBlacklist(){
+            $.ajax({
+                type  : 'DELETE',
+                url   : "{{ url('/api/deleteBlacklist') }}",
+                dataType : 'json',
+                headers: {
+                    "Authorization" : "Bearer {{ Cookie::get('api_token') }}",
+                },
+                data: {
+                    id : '23'
+                },
+                success : function(response){
+                    let data = response.data;
+                    if(response.status)
+                    {
+                        alert(response.message);
+                        getBlacklist();
+                        clearinput();
+                    }
+                    else
+                    {
+                        alert(response.message);
+                    }
+                },
+                error: function(err){
+                    console.log("masuk sini")
+                    alert("Error, hubungi admin")
+                }
+            });
+        }
+
         function setBlacklist()
 		{
             event.preventDefault();
@@ -267,7 +329,6 @@
             // // return;
 
             // // console.log('masuk');
-
             $.ajax({
                 type  : 'POST',
                 url   : "{{ url('/api/setBlacklist') }}",
@@ -349,7 +410,6 @@
                                 }
                             } else {
                                 // Give a feedback for user if doesnt exist data with input
-
                                 html2 =
                                     "<h4>Nama atau NIK tidak ditemukan di daftar blacklist.</h4>";
                             }

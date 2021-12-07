@@ -69,10 +69,11 @@ class LoginController extends Controller
         }
         
         $user = User::create([
-            'name' => $request['name'],
-            'telp' => $request['telp'],
-            'email' => $request['email'],
-            'password' => Hash::make($request['password']),
+            'name'      => $request['name'],
+            'telp'      => $request['telp'],
+            'email'     => $request['email'],
+            'password'  => Hash::make($request['password']),
+            'isAdmin'   => false,
         ]);
 
         $response['status'] = true;

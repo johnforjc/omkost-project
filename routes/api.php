@@ -28,10 +28,15 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::post('setBlacklist', 'BlacklistController@set');
     Route::get('getBlacklist', 'BlacklistController@get');
     Route::put('validateBacklist', 'BlacklistController@validateBacklist');
+    Route::delete('deleteBlacklist', 'BlacklistController@delete');
 
     Route::post('setTukang', 'TukangController@set');
+    Route::put('validateTukang', 'TukangController@validateTukang');
     Route::get('getTukang', 'TukangController@get');
+    Route::delete('deleteTukang', 'TukangController@delete');
 
     Route::post('setToko', 'TokoController@set');
+    Route::put('validateToko', 'BlacklistController@validateToko');
+    Route::delete('deleteToko', 'TokoController@delete');
     Route::get('getToko', 'TokoController@get');
 });

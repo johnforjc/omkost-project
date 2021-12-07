@@ -20,10 +20,10 @@ class CreateBlacklistTable extends Migration
             $table->string('nama');
             $table->string('telp');
             $table->string('keterangan');
-            $table->string('bukti');
+            $table->string('bukti')->nullable();
             $table->string('submit_by');
-            $table->timestamp('submit_at')->nullable();
-            $table->string('validate_by');
+            $table->timestamp('submit_at');
+            $table->string('validate_by')->nullable();
             $table->timestamp('validate_at')->nullable();
             $table->timestamps();
         });

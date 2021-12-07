@@ -58,6 +58,7 @@ class TokoController extends Controller
         $toko = Toko::where('nama', 'like', '%'.request('nama').'%')
                     ->where('kota', 'like', '%'.request('kota').'%')
                     ->where('jenis', 'like', '%'.request('jenis').'%')
+                    ->whereNotNull('validate_by')
                     ->get();
 
         $response['status'] = true;
@@ -96,8 +97,50 @@ class TokoController extends Controller
         return response()->json($response, 200);
     }
 
-    public function delete(Toko $toko)
+    public function validateToko(Request $request){
+        // validasi toko oleh admin
+        $user = Auth::user();
+        
+        if(!$user->isAdmin){
+            $response["status"] = false;
+            $response["message"] = 'Maaf, anda tidak berhak untuk melakukan validasi';
+            return response()->json($response, 401);
+        }
+
+        $request->validate([
+            'id' => 'required'
+        ]); 
+
+        $toko = Toko::find($request->id);
+
+        $toko->validate_at = Carbon::now();
+        $toko->validate_by = $user->email;
+        $toko->save();
+
+        $response['status'] = true;
+        $response["message"] = 'Data telah divalidasi';
+
+        return response()->json($response, 201);
+    }
+
+    public function delete(Request $request)
     {
-        //
+        //  validasi user adalah user yang merekomendasikan toko
+        $user = Auth::user();
+
+        $toko = Toko::find($request->id);
+        
+        if($user->email != $toko->submit_by){
+            $response["status"] = false;
+            $response["message"] = 'Maaf, anda tidak berhak untuk melakukan operasi ini.';
+            return response()->json($response, 401);
+        }
+
+        $toko->delete();
+
+        $response['status'] = true;
+        $response["message"] = 'Data telah dihapus';
+
+        return response()->json($response, 201);
     }
 }

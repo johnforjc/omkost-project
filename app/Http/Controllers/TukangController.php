@@ -55,6 +55,7 @@ class TukangController extends Controller
         $tukang = Tukang::where('nama', 'like', '%'.request('nama').'%')
                             ->where('kota', 'like', '%'.request('kota').'%')
                             ->where('jenis', 'like', '%'.request('jenis').'%')
+                            ->whereNotNull('validate_by')
                             ->get();
 
         $response['status'] = true;
@@ -94,8 +95,50 @@ class TukangController extends Controller
         return response()->json($response, 201);
     }
 
-    public function delete(Tukang $tukang)
+    public function validateTukang(Request $request){
+        // validasi tukang oleh admin
+        $user = Auth::user();
+        
+        if(!$user->isAdmin){
+            $response["status"] = false;
+            $response["message"] = 'Maaf, anda tidak berhak untuk melakukan validasi';
+            return response()->json($response, 401);
+        }
+
+        $request->validate([
+            'id' => 'required'
+        ]); 
+
+        $tukang = Tukang::find($request->id);
+
+        $tukang->validate_at = Carbon::now();
+        $tukang->validate_by = $user->email;
+        $tukang->save();
+
+        $response['status'] = true;
+        $response["message"] = 'Data telah divalidasi';
+
+        return response()->json($response, 201);
+    }
+
+    public function delete(Request $request)
     {
-        //
+        //  validasi user adalah user yang merekomendasikan tukang
+        $user = Auth::user();
+
+        $tukang = Tukang::find($request->id);
+        
+        if($user->email != $tukang->submit_by){
+            $response["status"] = false;
+            $response["message"] = 'Maaf, anda tidak berhak untuk melakukan operasi ini.';
+            return response()->json($response, 401);
+        }
+
+        $tukang->delete();
+
+        $response['status'] = true;
+        $response["message"] = 'Data telah dihapus';
+
+        return response()->json($response, 201);
     }
 }

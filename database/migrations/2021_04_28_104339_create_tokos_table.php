@@ -22,8 +22,8 @@ class CreateTokosTable extends Migration
             $table->string('alamat');
             $table->string('keterangan');
             $table->string('submit_by');
-            $table->timestamp('submit_at')->nullable();
-            $table->string('validate_by');
+            $table->timestamp('submit_at');
+            $table->string('validate_by')->nullable();
             $table->timestamp('validate_at')->nullable();
             $table->timestamps();
         });

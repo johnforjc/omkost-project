@@ -28,14 +28,14 @@ class BlacklistController extends Controller
         // dd($request->file('bukti'));
         // return response()->json('succes', 200);
         
-        $imagePath = "Tidak masuk";
+        // $imagePath = "Tidak masuk";
 
-        if($request->file('bukti')) {
-            $imagePath = $request->file('bukti');
+        // if($request->file('bukti')) {
+        //     $imagePath = $request->file('bukti');
             // $imageName = $imagePath->getClientOriginalName() . '-' . time() . '.' . $imagePath->extension();
 
             // $request->file('bukti')->move(public_path('image/'), $imageName);
-        }
+        // }
 
         /*
         $blacklist = new Contact([
@@ -84,8 +84,9 @@ class BlacklistController extends Controller
         if($request->filled('cari'))
         {
             $blacklist = Blacklist::where('identitas', 'like', '%'.request('cari').'%')
-            ->orWhere('nama', 'like', '%'.request('cari').'%')->where('jenis', 'like', request('jenis'))
-            ->get();
+                                ->orWhere('nama', 'like', '%'.request('cari').'%')->where('jenis', 'like', request('jenis'))
+                                ->whereNotNull('validate_by')
+                                ->get();
         }
         //$blacklist = Blacklist::get();
         //$blacklist = Blacklist::where('blacklistid', request('blacklistid'))->get(),200,[]);
@@ -145,7 +146,7 @@ class BlacklistController extends Controller
 
         $blacklist = Blacklist::find($request->id);
 
-        $blacklist->validate_at = time();
+        $blacklist->validate_at = Carbon::now();
         $blacklist->validate_by = $user->email;
         $blacklist->save();
 
@@ -155,8 +156,24 @@ class BlacklistController extends Controller
         return response()->json($response, 201);
     }
 
-    public function delete(Blacklist $blacklist)
+    public function delete(Request $request)
     {
-        //
+        //  validasi user adalah pembuatan blacklist
+        $user = Auth::user();
+
+        $blacklist = Blacklist::find($request->id);
+        
+        if($user->email != $blacklist->submit_by){
+            $response["status"] = false;
+            $response["message"] = 'Maaf, anda tidak berhak untuk melakukan operasi ini.';
+            return response()->json($response, 401);
+        }
+
+        $blacklist->delete();
+
+        $response['status'] = true;
+        $response["message"] = 'Data telah dihapus';
+
+        return response()->json($response, 201);
     }
 }
