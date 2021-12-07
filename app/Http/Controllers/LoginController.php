@@ -29,9 +29,10 @@ class LoginController extends Controller
         {
             $user = Auth::user();
 
-            $arrBack['nama'] = $user->name;
-            $arrBack['email'] = $user->email;
-            $arrBack['token'] = $user->createToken('OmkostToken')->plainTextToken;
+            $arrBack['nama']        = $user->name;
+            $arrBack['email']       = $user->email;
+            $arrBack['token']       = $user->createToken('OmkostToken')->plainTextToken;
+            // $arrBack['isAdmin']     = $user->isAdmin;
             
             $response['status'] = true;
             $response['message'] = 'Login Sukses';

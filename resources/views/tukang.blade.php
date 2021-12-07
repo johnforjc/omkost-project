@@ -31,12 +31,12 @@
                                 </div>
                                 </br></br>
 
-                                <div class="row align-items-left">
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
+                                <div class="align-items-left collapse show" id="cariTukangSection">
+                                    <div class="row d-flex justify-content-between form-group">
+                                        <div class="col-lg-6 mb-2">
                                             <h6>Jenis tukang</h6>
                                             <div class="simple-input">
-                                                <select id="seljenistukang" class="form-control">
+                                                <select id="cariJenisTukang" class="form-control">
                                                     <option value="ac">AC</option>
                                                     <option value="bangunan">Bangunan</option>
                                                     <option value="ledeng">Ledeng</option>
@@ -45,45 +45,81 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group">
+                                        <div class="col-lg-6 mb-2">
                                             <h6>Kota</h6>
                                             <input type="text" class="form-control" placeholder="Surabaya"
-                                            id="txtkota">
+                                            id="cariKotaTukang">
                                         </div>
 
-                                        <div class="form-group">
+                                        <div class="col-lg-6 mb-2">
                                             <h6>Nama</h6>
-                                            <input type="text" class="form-control" placeholder="Pak Londo" id="txtnama1">
-                                        </div>
-                                        
-                                        <div id = "divcek" class = "collapse show">
-                                            <!--
-                                            <h6>Cari Melalui</h6>
-                                            <div class="form-group">
-                                                <div class="input-with-icon">
-                                                    <input type="text" class="form-control" placeholder="KTP / Nama"
-                                                    id="txtcari">
-                                                    <i class="ti-search"></i>
-                                                </div>
-                                            </div>
-                                        -->
-                                            <button id="btncek" type="button" class="btn btn-theme full-width bg-2" onclick="getTukang()">Cari</button>
-                                        </div>
-    
-                                        <div id = "divtambah" class = "collapse">
-                                            <div class="form-group">
-                                                <div class="input-with-icon">
-                                                    <h6>Telp</h6>
-                                                    <input type="text" class="form-control" placeholder="081xxxxxxxxx"
-                                                    id="txttelp1">
-                                                    <h6>Keterangan</h6>
-                                                    <input type="text" class="form-control" placeholder="Hasil kerja bagus"
-                                                    id="txtketerangan">
-                                                </div>
-                                                <button id="btnsimpan" type="button" class="btn btn-theme full-width bg-2" onclick="setTukang()">Simpan</button>
-                                            </div>
+                                            <input type="text" class="form-control" placeholder="Pak Londo" id="cariNamaTukang">                    
                                         </div>
                                     </div>
+
+                                    <div class="form-group">
+                                        <button id="btnsimpan" type="button" class="btn btn-theme full-width bg-2" onclick="getTukang()">Simpan</button>
+                                    </div>
+
+                                    <h3>Hasil Pencarian</h3>
+                                    <table class="property-table-wrap responsive-table bkmark">
+                                        <tbody id="dttukang2">
+                                            <thead>
+                                                <tr>
+                                                    <th style="text-align:left;width:1%;">Kota</th>
+                                                    <th style="text-align:left;width:auto;">Nama</th>
+                                                    <th style="text-align:left;width:1%;">Telp</th>
+                                                    <th style="text-align:left;width:auto;">Keterangan</th>
+                                                    <th style="text-align:left;width:1%;">Referensi</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="align-items-left collapse" id="tambahTukangSection">
+                                    <div class="row d-flex justify-content-between form-group">
+                                        <div class="col-lg-6 mb-2">
+                                            <h6>Jenis tukang</h6>
+                                            <div class="simple-input">
+                                                <select id="tambahJenisTukang" class="form-control">
+                                                    <option value="ac">AC</option>
+                                                    <option value="bangunan">Bangunan</option>
+                                                    <option value="ledeng">Ledeng</option>
+                                                    <option value="listrik">Listrik</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6 mb-2">
+                                            <h6>Kota</h6>
+                                            <input type="text" class="form-control" placeholder="Surabaya"
+                                            id="tambahKotaTukang">
+                                        </div>
+
+                                        <div class="col-lg-6 mb-2">
+                                            <h6>Nama</h6>
+                                            <input type="text" class="form-control" placeholder="Pak Londo" id="tambahNamaTukang">                    
+                                        </div>
+
+                                        <div class="col-md-6 mb-2">
+                                            <h6>Telp</h6>
+                                            <input type="text" class="form-control" placeholder="081xxxxxxxxx"id="tambahTelponTukang">
+                                        </div>
+
+                                        <div class="col-md-6 mb-2">
+                                            <h6>Keterangan</h6>
+                                            <input type="text" class="form-control" placeholder="Hasil kerja bagus" id="tambahKeteranganTukang">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button id="btnsimpan" type="button" class="btn btn-theme full-width bg-2" onclick="setTukang()">Rekomendasikan</button>
+                                    </div>
+                                </div>
+
+                                
                                 <!--
                                     <div class="col-lg-8">
                                         <table class="table" id="tabeltukang" style = "width:100%;">
@@ -105,39 +141,6 @@
                                 -->
                                 </div>
                             </div>
-                            <h3>Hasil Pencarian</h3>
-                            <table class="property-table-wrap responsive-table bkmark">
-                                <tbody id="dttukang2">
-                                    <thead>
-                                        <tr>
-                                            <th style="text-align:left;width:1%;">Kota</th>
-                                            <th style="text-align:left;width:auto;">Nama</th>
-                                            <th style="text-align:left;width:1%;">Telp</th>
-                                            <th style="text-align:left;width:auto;">Keterangan</th>
-                                            <th style="text-align:left;width:1%;">Referensi</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <!-- Item #1 
-                                    <tr>
-                                        <td class="dashboard_propert_wrapper">
-                                            <img src="https://via.placeholder.com/1400x720" alt="">
-                                            <div class="title">
-                                                <h4><a href="#">Identitas</a></h4>
-                                                <span id="spannama">Nama : </span>
-                                                <span>Telp : asdfsdfsd</span>
-                                                <span>Keterangan : </span>
-                                                <span class="table-property-price">$900 / monthly</span>
-                                            </div>
-                                        </td>-->
-                                    <!--
-                                        <td class="action">
-                                            <a href="#" class="delete"><i class="ti-close"></i> Delete</a>
-                                        </td>
-                                    
-                                    </tr>-->
-                                </tbody>
-                            </table>
 
                             <!--
                             <div class="row">
@@ -200,22 +203,24 @@
         $("#sbtukang").addClass("active");
         function tabcek()
         {
-            $("#divcek").collapse('show');
-            $("#divtambah").collapse('hide');
+            $("#cariTukangSection").collapse('show');
+            $("#tambahTukangSection").collapse('hide');
             clearinput();
         }
         function tabtambah()
         {
-            $("#divcek").collapse('hide');
-            $("#divtambah").collapse('show');
+            $("#cariTukangSection").collapse('hide');
+            $("#tambahTukangSection").collapse('show');
             clearinput();
         }
         function clearinput()
         {
-            $('#txtkota').val("");
-            $('#txtnama1').val("");
-            $('#txttelp1').val("");
-            $('#txtketerangan').val("");
+            $('#cariKotaTukang').val("");
+            $('#cariNamaTukang').val("");
+            $('#tambahKotaTukang').val("");
+            $('#tambahNamaTukang').val("");
+            $('#tambahKeteranganTukang').val("");
+            $('#tambahTelponTukang').val("");
         }
 
         function setTukang()
@@ -228,11 +233,11 @@
                     "Authorization" : "Bearer {{ Cookie::get('api_token') }}"
                 },
                 data : {
-                    jenis       :$('#seljenistukang').val(), 
-                    kota        :$('#txtkota').val(), 
-                    nama        :$('#txtnama1').val(), 
-                    telp        :$('#txttelp1').val(), 
-                    keterangan  :$('#txtketerangan').val()
+                    jenis       :$('#tambahJenisTukang').val(), 
+                    kota        :$('#tambahKotaTukang').val(), 
+                    nama        :$('#tambahNamaTukang').val(), 
+                    telp        :$('#tambahTelponTukang').val(), 
+                    keterangan  :$('#tambahKeteranganTukang').val()
                     //submit_by:"{{ Cookie::get('email') }}",
                 },
                 success : function(response){
@@ -264,9 +269,9 @@
                     "Authorization" : "Bearer {{ Cookie::get('api_token') }}"
                 },
                 data : {
-                    jenis       :$('#seljenistukang').val(), 
-                    kota        :$('#txtkota').val(), 
-                    nama        :$('#txtnama1').val(), 
+                    jenis       :$('#cariJenisTukang').val(), 
+                    kota        :$('#cariKotaTukang').val(), 
+                    nama        :$('#cariNamaTukang').val(), 
                 },
                 success : function(response){
                     let data = response.data;

@@ -32,12 +32,14 @@
                                 </div>
                                 </br></br>
 
-                                <div class="row align-items-left">
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
+                                <div class="align-items-left collapse show" id="cariTukangSection">
+
+                                    <div class="row d-flex justify-content-between form-group">
+
+                                        <div class="col-lg-6  mb-2">
                                             <h6>Jenis toko</h6>
                                             <div class="simple-input">
-                                                <select id="seljenistoko" class="form-control">
+                                                <select id="cariJenisToko" class="form-control">
                                                     <option value="ac">AC</option>
                                                     <option value="bangunan">Bangunan</option>
                                                     <option value="listrik">Listrik</option>
@@ -46,47 +48,85 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group">
+                                        <div class="col-lg-6  mb-2">
                                             <h6>Nama</h6>
-                                            <input type="text" class="form-control" placeholder="Sumber Jaya" id="txtnama1">
+                                            <input type="text" class="form-control" placeholder="Sumber Jaya" id="cariNamaToko">
                                         </div>
 
-                                        <div class="form-group">
+                                        <div class="col-lg-6  mb-2">
                                             <h6>Kota</h6>
-                                            <input type="text" class="form-control" placeholder="Surabaya" id="txtkota">
+                                            <input type="text" class="form-control" placeholder="Surabaya" id="cariKotaToko">
                                         </div>
-    
-                                        <div id = "divcek" class = "collapse show">
-                                            <!--
-                                            <h6>Cari Melalui</h6>
-                                            <div class="form-group">
-                                                <div class="input-with-icon">
-                                                    <input type="text" class="form-control" placeholder="KTP / Nama"
-                                                    id="txtcari">
-                                                    <i class="ti-search"></i>
-                                                </div>
+
+                                    </div>
+                                    
+                                    <div class="form-group col" >
+                                        <button id="btncek" type="button" class="btn btn-theme full-width bg-2" onclick="getToko()">Cek</button>
+                                    </div>
+
+                                    <h3>Hasil Pencarian</h3>
+                                    <table class="property-table-wrap responsive-table bkmark">
+                                        <tbody id="dttoko2">
+                                            <thead>
+                                                <tr>
+                                                    <th style="text-align:left;width:1%;">Kota</th>
+                                                    <th style="text-align:left;width:1%;">Nama</th>
+                                                    <th style="text-align:left;width:1%;">Telp</th>
+                                                    <th style="text-align:left;width:auto;">Alamat</th>
+                                                    <th style="text-align:left;width:auto;">Keterangan</th>
+                                                    <th style="text-align:left;width:1%;">Referensi</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div id = "tambahTokoSection" class = "align-items-left collapse">
+                                    <div class="row d-flex justify-content-between form-group">
+                                        <div class="col-lg-6  mb-2">
+                                            <h6>Jenis toko</h6>
+                                            <div class="simple-input">
+                                                <select id="tambahJenisToko" class="form-control">
+                                                    <option value="ac">AC</option>
+                                                    <option value="bangunan">Bangunan</option>
+                                                    <option value="listrik">Listrik</option>
+                                                    <option value="mebel">Mebel/Furniture</option>
+                                                </select>
                                             </div>
-                                        -->
-                                            <button id="btncek" type="button" class="btn btn-theme full-width bg-2" onclick="getToko()">Cek</button>
                                         </div>
-    
-                                        <div id = "divtambah" class = "collapse">
-                                            <div class="form-group">
-                                                <div class="input-with-icon">
-                                                    <h6>Telp</h6>
-                                                    <input type="text" class="form-control" placeholder="081xxxxxxxxx"
-                                                    id="txttelp1">
-                                                    <h6>Alamat</h6>
-                                                    <input type="text" class="form-control" placeholder="Jl. Pahlawan No.xx"
-                                                    id="txtalamat">
-                                                    <h6>Keterangan</h6>
-                                                    <input type="text" class="form-control" placeholder="Harga sesuai kualitas"
-                                                    id="txtketerangan">
-                                                </div>
-                                                <button id="btnsimpan" type="button" class="btn btn-theme full-width bg-2" onclick="setToko()">Simpan</button>
-                                            </div>
+
+                                        <div class="col-lg-6  mb-2">
+                                            <h6>Nama</h6>
+                                            <input type="text" class="form-control" placeholder="Sumber Jaya" id="tambahNamaToko">
+                                        </div>
+
+                                        <div class="col-lg-6  mb-2">
+                                            <h6>Kota</h6>
+                                            <input type="text" class="form-control" placeholder="Surabaya" id="tambahKotaToko">
+                                        </div>
+
+                                        <div class="col-lg-6  mb-2">
+                                            <h6>Telp</h6>
+                                            <input type="text" class="form-control" placeholder="081xxxxxxxxx" id="tambahTelponToko">
+                                        </div>
+
+                                        <div class="col-lg-6  mb-2">
+                                            <h6>Alamat</h6>
+                                            <input type="text" class="form-control" placeholder="Jl. Pahlawan No.xx" id="tambahAlamatToko">
+                                        </div>
+
+                                        <div class="col-lg-6  mb-2">
+                                            <h6>Keterangan</h6>
+                                            <input type="text" class="form-control" placeholder="Harga sesuai kualitas" id="tambahKeteranganToko">
                                         </div>
                                     </div>
+                                    
+                                    <div class="form-group">
+                                        <button id="btnsimpan" type="button" class="btn btn-theme full-width bg-2" onclick="setToko()">Simpan</button>
+                                    </div>
+                                </div>
+
                                 <!--
                                     <div class="col-lg-8">
                                         <table class="table" id="tabeltoko" style = "width:100%;">
@@ -108,40 +148,6 @@
                                 -->
                                 </div>
                             </div>
-                            <h3>Hasil Pencarian</h3>
-                            <table class="property-table-wrap responsive-table bkmark">
-                                <tbody id="dttoko2">
-                                    <thead>
-                                        <tr>
-                                            <th style="text-align:left;width:1%;">Kota</th>
-                                            <th style="text-align:left;width:1%;">Nama</th>
-                                            <th style="text-align:left;width:1%;">Telp</th>
-                                            <th style="text-align:left;width:auto;">Alamat</th>
-                                            <th style="text-align:left;width:auto;">Keterangan</th>
-                                            <th style="text-align:left;width:1%;">Referensi</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <!-- Item #1 
-                                    <tr>
-                                        <td class="dashboard_propert_wrapper">
-                                            <img src="https://via.placeholder.com/1400x720" alt="">
-                                            <div class="title">
-                                                <h4><a href="#">Identitas</a></h4>
-                                                <span id="spannama">Nama : </span>
-                                                <span>Telp : asdfsdfsd</span>
-                                                <span>Keterangan : </span>
-                                                <span class="table-property-price">$900 / monthly</span>
-                                            </div>
-                                        </td>-->
-                                    <!--
-                                        <td class="action">
-                                            <a href="#" class="delete"><i class="ti-close"></i> Delete</a>
-                                        </td>
-                                    
-                                    </tr>-->
-                                </tbody>
-                            </table>
 
                             <!--
                             <div class="row">
@@ -204,23 +210,25 @@
         $("#sbtoko").addClass("active");
         function tabcek()
         {
-            $("#divcek").collapse('show');
-            $("#divtambah").collapse('hide');
+            $("#cariTukangSection").collapse('show');
+            $("#tambahTokoSection").collapse('hide');
             clearinput();
         }
         function tabtambah()
         {
-            $("#divcek").collapse('hide');
-            $("#divtambah").collapse('show');
+            $("#cariTukangSection").collapse('hide');
+            $("#tambahTokoSection").collapse('show');
             clearinput();
         }
         function clearinput()
         {
-            $('#txtkota').val("");
-            $('#txtnama1').val("");
-            $('#txttelp1').val("");
-            $('#txtalamat').val("");
-            $('#txtketerangan').val("");
+            $('#tambahAlamatToko').val("");
+            $('#tambahNamaToko').val("");
+            $('#tambahKotaToko').val("");
+            $('#tambahTelponToko').val("");
+            $('#tambahKeteranganToko').val("");
+            $('#cariNamaToko').val("");
+            $('#cariKotaToko').val("");
         }
 
         function setToko()
@@ -233,12 +241,12 @@
                     "Authorization" : "Bearer {{ Cookie::get('api_token') }}"
                 },
                 data : {
-                    jenis       :$('#seljenistoko').val(), 
-                    kota        :$('#txtkota').val(), 
-                    nama        :$('#txtnama1').val(), 
-                    telp        :$('#txttelp1').val(),
-                    alamat      :$('#txtalamat').val(),
-                    keterangan  :$('#txtketerangan').val()
+                    jenis       :$('#tambahJenisToko').val(), 
+                    kota        :$('#tambahKotaToko').val(), 
+                    nama        :$('#tambahNamaToko').val(), 
+                    telp        :$('#tambahTelponToko').val(),
+                    alamat      :$('#tambahAlamatToko').val(),
+                    keterangan  :$('#tambahKeteranganToko').val()
                     //submit_by:"{{ Cookie::get('email') }}",
                 },
                 success : function(response){
@@ -270,7 +278,9 @@
                     "Authorization" : "Bearer {{ Cookie::get('api_token') }}"
                 },
                 data : {
-                   jenis  :$('#seljenistoko').val()
+                   jenis    :$('#cariJenisToko').val(),
+                   nama     :$('#cariNamaToko').val(),
+                   kota     :$('#cariKotaToko').val(),
                 },
                 success : function(response){
                     let data = response.data;

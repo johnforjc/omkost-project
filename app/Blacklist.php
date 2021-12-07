@@ -13,6 +13,6 @@ class Blacklist extends Model
      * @var array
      */
     protected $fillable = [
-        'jenis', 'kota', 'identitas', 'nama', 'telp', 'keterangan', 'bukti', 'submit_by'
+        'jenis', 'kota', 'identitas', 'nama', 'telp', 'keterangan', 'bukti', 'submit_by', 'validate'
     ];
 }
