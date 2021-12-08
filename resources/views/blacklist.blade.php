@@ -2,6 +2,7 @@
 
 @section('konten')
 	@include('layouts.partial.navbar')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <section class="gray p-0">
         <div class="container-fluid p-0">
             <div class="row">
@@ -65,7 +66,7 @@
 
 
                                 <div class="align-items-left collapse" id="tambahBlacklistSection">
-                                        <form enctype="multipart/form-data" onsubmit="setBlacklist()">
+                                        <form enctype="multipart/form-data" onsubmit="setBlacklist()" id="formAddBlacklist">
                                             @csrf
                                             <div class="row d-flex justify-content-between form-group">
                                                 <div class="col-lg-6 mb-2">
@@ -274,7 +275,6 @@
                     }
                 },
                 error: function(err){
-                    console.log("masuk sini")
                     alert("Error, hubungi admin")
                 }
             });
@@ -329,33 +329,50 @@
             // // return;
 
             // // console.log('masuk');
+
+            // var formData = new FormData($('#formAddBlacklist')[0]);
+            let formData = new FormData();
+
+            let file = $('#tambahBuktiBlacklist')[0].files[0];
+            formData.append('bukti', file);
+            formData.append('jenis', $('#tambahJenisBlacklist').val());
+            formData.append('kota', $('#tambahKotaBlacklist').val());
+            formData.append('identitas', $('#tambahIdentitasBlacklist').val());
+            formData.append('nama', $('#tambahNamaBlacklist').val());
+            formData.append('telp', $('#tambahTelponBlacklist').val());
+            formData.append('keterangan', $('#tambahKeteranganBlacklist').val());
+
             $.ajax({
                 type  : 'POST',
                 url   : "{{ url('/api/setBlacklist') }}",
                 dataType : 'json',
                 headers: {
                     "Authorization" : "Bearer {{ Cookie::get('api_token') }}",
-
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                // data    : newFormData,
-                data : {
-                    jenis       :$('#tambahJenisBlacklist').val(), 
-                    kota        :$('#tambahKotaBlacklist').val(), 
-                    identitas   :$('#tambahIdentitasBlacklist').val(), 
-                    nama        :$('#tambahNamaBlacklist').val(), 
-                    telp        :$('#tambahTelponBlacklist').val(), 
-                    keterangan  :$('#tambahKeteranganBlacklist').val(),
-                    bukti       :$('#tambahBuktiBlacklist').val(),
+                data    : formData,
+                cache: false,
+                processData: false,  // tell jQuery not to process the data
+                contentType: false,  // tell jQuery not to set contentType
+                async: false,
+                // data : {
+                //     jenis       :$('#tambahJenisBlacklist').val(), 
+                //     kota        :$('#tambahKotaBlacklist').val(), 
+                //     identitas   :$('#tambahIdentitasBlacklist').val(), 
+                //     nama        :$('#tambahNamaBlacklist').val(), 
+                //     telp        :$('#tambahTelponBlacklist').val(), 
+                //     keterangan  :$('#tambahKeteranganBlacklist').val(),
 
-                    //submit_by:"{{ Cookie::get('email') }}",
-                },
+                //     //submit_by:"{{ Cookie::get('email') }}",
+                // },
                 success : function(response){
                     let data = response.data;
                     if(response.status)
                     {
                         alert(response.message);
-                        getBlacklist();
+                        // getBlacklist();
                         clearinput();
+                        console.log(response.data);
                     }
                     else
                     {
@@ -363,7 +380,6 @@
                     }
                 },
                 error: function(err){
-                    console.log("masuk sini")
                     alert("Error, hubungi admin")
                 }
             });
@@ -376,7 +392,6 @@
             // Make HTML Element using Javascript for blacklist
             let html2 = "";
 
-            console.log($("#cariNamaBlacklist").val());
             if ($("#cariNamaBlacklist").val().length > 5) {
                 // Make a async funtion for this fecth function from server
                 await $.ajax({

@@ -22,33 +22,21 @@ class BlacklistController extends Controller
         $request->validate([
             'jenis'=>'required',
             'identitas'=>'required',
-            // 'bukti' => 'required',
+            // 'bukti' => 'required|mimes:jpeg,jpg,png',
         ]);
 
-        // dd($request->file('bukti'));
-        // return response()->json('succes', 200);
-        
-        // $imagePath = "Tidak masuk";
+        if(!$request->file( 'bukti' )){
+            return response()->json([
+                'message' => 'image not found',
+            ]);
+        }
 
-        // if($request->file('bukti')) {
-        //     $imagePath = $request->file('bukti');
-            // $imageName = $imagePath->getClientOriginalName() . '-' . time() . '.' . $imagePath->extension();
+        $file = $request->file('bukti');
+        $filename = $file->getClientOriginalName();
+        $filename = $user->id . time() . $filename;
 
-            // $request->file('bukti')->move(public_path('image/'), $imageName);
-        // }
+        $path = $file->storeAs('/', $filename);
 
-        /*
-        $blacklist = new Contact([
-            'first_name' => $request->get('first_name'),
-            'last_name' => $request->get('last_name'),
-            'email' => $request->get('email'),
-            'job_title' => $request->get('job_title'),
-            'city' => $request->get('city'),
-            'country' => $request->get('country')
-        ]);
-        $contact->save();
-        return redirect('/contacts')->with('success', 'Contact saved!');
-        */
         Blacklist::create([
             'jenis' => $request['jenis'],
             'kota' => $request['kota'],
@@ -56,7 +44,7 @@ class BlacklistController extends Controller
             'nama' => $request['nama'],
             'telp' => $request['telp'],
             'keterangan' => $request['keterangan'],
-            // 'bukti' => $request->bukti,
+            'bukti' => $path,
             'submit_by' => $user->email,
             'submit_at' => Carbon::now(),
         ]);
@@ -66,6 +54,7 @@ class BlacklistController extends Controller
 
         $response['status'] = true;
         $response['message'] = 'Data blacklist tersimpan';
+        $response['data'] = $filename;
 
         return response()->json($response, 200);
     }
