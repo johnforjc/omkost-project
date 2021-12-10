@@ -26,6 +26,11 @@ Route::get('/manajemen', 'PageController@manajemen');
 Route::get('/blacklist', 'BlacklistController@index');
 Route::get('/tukang', 'TukangController@index');
 Route::get('/toko', 'TokoController@index');
+
+Route::get('/adminblacklist', 'BlacklistController@admin');
+Route::get('/admintoko', 'TokoController@admin');
+Route::get('/admintukang', 'TukangController@admin');
+
 //Route::get('/login', 'PageController@login');
 //Route::get('/tentang', 'PageController@tentang')->name('profile');
 //Route::get('/kontak', 'PageController@kontak');

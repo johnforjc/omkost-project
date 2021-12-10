@@ -36,7 +36,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::delete('deleteTukang', 'TukangController@delete');
 
     Route::post('setToko', 'TokoController@set');
-    Route::put('validateToko', 'BlacklistController@validateToko');
+    Route::put('validateToko', 'TokoController@validateToko');
     Route::delete('deleteToko', 'TokoController@delete');
     Route::get('getToko', 'TokoController@get');
 });

@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Auth;
 
 class BlacklistController extends Controller
 {
+    public function admin()
+    {
+        return view('adminblacklist');
+    }
+
     public function index()
     {
         return view('blacklist');
@@ -62,30 +67,37 @@ class BlacklistController extends Controller
 
     public function get(Request $request)
     {
-        $blacklist = Blacklist::all();
-        //Blacklist::select('*');
+        if($request->filled('status')){
+            if($request['status'] == "belum"){
+                $blacklist = Blacklist::whereNull('validate_by')->get();
+            } else {
+                $blacklist = Blacklist::whereNotNull('validate_by')->get();
+            }
 
-        $error = $request->validate([
-            'jenis'=>'required',
-            'cari'=>'required',
-        ]);
+            return response()->json([
+                'status'        => true,
+                'data'          => $blacklist
+            ], 200);
+        }
 
         if($request->filled('cari'))
         {
+            $error = $request->validate([
+                'jenis'=>'required',
+                'cari'=>'required',
+            ]);
+
             $blacklist = Blacklist::where('identitas', 'like', '%'.request('cari').'%')
                                 ->orWhere('nama', 'like', '%'.request('cari').'%')->where('jenis', 'like', request('jenis'))
                                 ->whereNotNull('validate_by')
                                 ->get();
+
+            $response['status'] = true;
+            $response['message'] = 'Data blacklist diterima';
+            $response['data'] = $blacklist;
+
+            return response()->json($response, 200);
         }
-        //$blacklist = Blacklist::get();
-        //$blacklist = Blacklist::where('blacklistid', request('blacklistid'))->get(),200,[]);
-
-        //$user = User::where('email', $request->email)->first();
-        $response['status'] = true;
-        $response['message'] = 'Data blacklist diterima';
-        $response['data'] = $blacklist;
-
-        return response()->json($response, 200);
     }
 
     public function update(Request $request)

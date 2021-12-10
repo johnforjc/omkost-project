@@ -15,6 +15,11 @@ class TokoController extends Controller
         return view('toko');
     }
 
+    public function admin()
+    {
+        return view('admintoko');
+    }
+
     public function set(Request $request)
     {
         $user = Auth::user();
@@ -48,24 +53,38 @@ class TokoController extends Controller
 
     public function get(Request $request)
     {
-        if(!$request->filled('jenis'))
+        if($request->filled('status')){
+            if($request['status'] == "belum"){
+                $toko = Toko::whereNull('validate_by')->get();
+            } else {
+                $toko = Toko::whereNotNull('validate_by')->get();
+            }
+
+            return response()->json([
+                'status'        => true,
+                'data'          => $toko
+            ], 200);
+        }
+        else if(!$request->filled('jenis'))
         {
             $response['status'] = false;
             $response['message'] = 'Jenis Toko tidak ditemukan';
             return response()->json($response);
         }
-
-        $toko = Toko::where('nama', 'like', '%'.request('nama').'%')
+        else{
+            $toko = Toko::where('nama', 'like', '%'.request('nama').'%')
                     ->where('kota', 'like', '%'.request('kota').'%')
                     ->where('jenis', 'like', '%'.request('jenis').'%')
                     ->whereNotNull('validate_by')
                     ->get();
 
-        $response['status'] = true;
-        $response['message'] = 'Data Toko diterima';
-        $response['data'] = $toko;
+            $response['status'] = true;
+            $response['message'] = 'Data Toko diterima';
+            $response['data'] = $toko;
 
-        return response()->json($response, 200);
+            return response()->json($response, 200);
+        }
+        
     }
 
     public function update(Request $request)
@@ -106,7 +125,7 @@ class TokoController extends Controller
             $response["message"] = 'Maaf, anda tidak berhak untuk melakukan validasi';
             return response()->json($response, 401);
         }
-
+        
         $request->validate([
             'id' => 'required'
         ]); 

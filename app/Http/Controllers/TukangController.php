@@ -15,6 +15,11 @@ class TukangController extends Controller
         return view('tukang');
     }
 
+    public function admin()
+    {
+        return view('admintukang');
+    }
+
     public function set(Request $request)
     {
         $user = Auth::user();
@@ -45,24 +50,37 @@ class TukangController extends Controller
 
     public function get(Request $request)
     {
-        if(!$request->filled('jenis'))
+        if($request->filled('status')){
+            if($request['status'] == "belum"){
+                $tukang = Tukang::whereNull('validate_by')->get();
+            } else {
+                $tukang = Tukang::whereNotNull('validate_by')->get();
+            }
+
+            return response()->json([
+                'status'        => true,
+                'data'          => $tukang
+            ], 200);
+        }
+        else if(!$request->filled('jenis'))
         {
             $response['status'] = true;
             $response['message'] = 'Tolong masukkan jenis tukang yang dicari';
             return response()->json($response, 200);
+        } else {
+            $tukang = Tukang::where('nama', 'like', '%'.request('nama').'%')
+                                ->where('kota', 'like', '%'.request('kota').'%')
+                                ->where('jenis', 'like', '%'.request('jenis').'%')
+                                ->whereNotNull('validate_by')
+                                ->get();
+
+            $response['status'] = true;
+            $response['message'] = 'Data Tukang diterima';
+            $response['data'] = $tukang;
+
+            return response()->json($response, 200);
         }
 
-        $tukang = Tukang::where('nama', 'like', '%'.request('nama').'%')
-                            ->where('kota', 'like', '%'.request('kota').'%')
-                            ->where('jenis', 'like', '%'.request('jenis').'%')
-                            ->whereNotNull('validate_by')
-                            ->get();
-
-        $response['status'] = true;
-        $response['message'] = 'Data Tukang diterima';
-        $response['data'] = $tukang;
-
-        return response()->json($response, 200);
     }
 
     public function update(Request $request)
