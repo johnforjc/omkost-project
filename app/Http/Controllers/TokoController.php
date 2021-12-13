@@ -10,14 +10,20 @@ use Illuminate\Support\Facades\Auth;
 
 class TokoController extends Controller
 {
-    public function index()
-    {
-        return view('toko');
-    }
-
     public function admin()
     {
         return view('admintoko');
+    }
+
+    public function index(Request $request)
+    {
+        if ($request->cookie('admin')){
+            return redirect('/admintoko');
+        } else if($request->cookie('name')){
+            return view('toko');
+        } else{
+            return redirect('/');
+        }
     }
 
     public function set(Request $request)

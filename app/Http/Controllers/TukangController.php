@@ -10,9 +10,15 @@ use Illuminate\Support\Facades\Auth;
 
 class TukangController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('tukang');
+        if ($request->cookie('admin')){
+            return redirect('/admintukang');
+        } else if($request->cookie('name')){
+            return view('tukang');
+        } else{
+            return redirect('/');
+        }
     }
 
     public function admin()

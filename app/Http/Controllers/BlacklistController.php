@@ -15,9 +15,15 @@ class BlacklistController extends Controller
         return view('adminblacklist');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return view('blacklist');
+        if ($request->cookie('admin')){
+            return redirect('/adminblacklist');
+        } else if($request->cookie('name')){
+            return view('blacklist');
+        } else{
+            return redirect('/');
+        }
     }
 
     public function set(Request $request)

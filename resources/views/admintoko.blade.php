@@ -6,7 +6,7 @@
         <div class="container-fluid p-0">
             <div class="row">
 
-                @include('layouts.partial.sidebar')
+                @include('layouts.partial.adminsidebar')
 
                 <div class="col-lg-9 col-md-8 col-sm-12">
                     <div class="dashboard-body">

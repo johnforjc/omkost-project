@@ -43,8 +43,10 @@
                 var data = response.data;
                 if(response.status)
                 {
-                    document.cookie = "nama=" + data.nama + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/"; 
-                    document.cookie = "email=" + data.email + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/"; 
+                    console.log(data.user);
+                    document.cookie = "admin=" + data.user.isAdmin + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+                    document.cookie = "nama=" + data.user.name + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/"; 
+                    document.cookie = "email=" + data.user.email + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/"; 
                     document.cookie = "api_token=" + data.token + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/"; 
                     //location.reload();
                     window.location = "{{ url('/dashboard') }}";
