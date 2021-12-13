@@ -19,7 +19,7 @@ class BlacklistController extends Controller
     {
         if ($request->cookie('admin')){
             return redirect('/adminblacklist');
-        } else if($request->cookie('name')){
+        } else if($request->cookie('nama')){
             return view('blacklist');
         } else{
             return redirect('/');
@@ -60,9 +60,6 @@ class BlacklistController extends Controller
             'submit_at' => Carbon::now(),
         ]);
 
-        //$imageName = time().'.'.$request->image->extension();  
-        //$request->image->move(public_path('images'), $imageName);
-
         $response['status'] = true;
         $response['message'] = 'Data blacklist tersimpan';
         $response['data'] = $filename;
@@ -79,6 +76,16 @@ class BlacklistController extends Controller
             } else {
                 $blacklist = Blacklist::whereNotNull('validate_by')->get();
             }
+
+            return response()->json([
+                'status'        => true,
+                'data'          => $blacklist
+            ], 200);
+        }
+
+        if($request->filled('email')){
+            $blacklist = Blacklist::where('submit_by', 'like', '%'.request('email').'%')
+                                    ->get();
 
             return response()->json([
                 'status'        => true,

@@ -13,59 +13,53 @@
                         
                             <!-- Basic Information -->
                             <div class="frm_submit_block">	
-                                <h4>Profil Saya</h4>
-                                <div class="frm_submit_wrap">
-                                    <div class="form-row">
-                                    
-                                        <div class="form-group col-md-6">
-                                            <label>Nama</label>
-                                            <input type="text" class="form-control" value="Rudy">
-                                        </div>
-                                        
-                                        <div class="form-group col-md-6">
-                                            <label>Email</label>
-                                            <input type="email" class="form-control" value="tatak.rudy@gmail.com">
-                                        </div>
-                                        
-                                        <div class="form-group col-md-6">
-                                            <label>Telpon</label>
-                                            <input type="text" class="form-control" value="087852992277">
-                                        </div>
-                                        
-                                        <div class="form-group col-md-6">
-                                            <label>Status</label>
-                                            <input type="text" class="form-control" value="AKTIF">
-                                        </div>
-                                        
+                                <h3 class="mb-2">Profil Saya</h3>
+                                <div class="frm_submit_wrap pl-4">
+
+                                    <div class="row">
+                                        <div class="col-md-4"><h5>Nama</h5></div>
+                                        <div class="col-md-8">{{ $user["name"] }}</div>
                                     </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4"><h5>Telpon</h5></div>
+                                        <div class="col-md-8">{{ $user["telp"] }}</div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4"><h5>Email</h5></div>
+                                        <div class="col-md-8">{{ $user["email"] }}</div>
+                                    </div>
+
                                 </div>
                             </div>
                             
                             <div class="frm_submit_block">	
                                 <h4>Ubah Password</h4>
                                 <div class="frm_submit_wrap">
-                                    <div class="form-group col-md-6">
-                                        <label>Password Lama</label>
-                                        <input type="password" class="form-control" value="">
+                                    <div class="form-group">
+
+                                        <div class="row mb-3">
+                                            <div class="col-md-6 mb-2">
+                                                <label>Password Lama</label>
+                                                <input type="password" class="form-control" value="">
+                                            </div>
+                                            
+                                            <div class="col-md-6 mb-2">
+                                                <label>Password Baru</label>
+                                                <input type="password" class="form-control" value="">
+                                            </div>
+                                            
+                                            <div class="col-md-6 mb-2">
+                                                <label>Konfirmasi Password Baru</label>
+                                                <input type="password" class="form-control" value="">
+                                            </div>
+                                        </div>
+
+                                        <button class="btn btn-theme bg-2 col" type="submit">Save Changes</button>
+                                        
                                     </div>
-                                    <div class="form-row">
                                     
-                                        
-                                        
-                                        <div class="form-group col-md-6">
-                                            <label>Password Baru</label>
-                                            <input type="password" class="form-control" value="">
-                                        </div>
-                                        
-                                        <div class="form-group col-md-6">
-                                            <label>Konfirmasi Password Baru</label>
-                                            <input type="password" class="form-control" value="">
-                                        </div>
-                                        
-                                        <div class="form-group col-lg-12 col-md-12">
-                                            <button class="btn btn-theme bg-2" type="submit">Save Changes</button>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                             

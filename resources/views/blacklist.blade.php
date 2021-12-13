@@ -116,74 +116,14 @@
                                                 <button id="btnsimpan" type="submit" class="btn btn-theme full-width bg-2">Simpan</button>
                                             </div>
                                         </form>
-                                    </div>
 
-                                        <!-- <div class="form-group">
-                                            <div class="simple-input">
-                                                <select id="seljenisblacklist" class="form-control">
-                                                    <option value="pencari">Pencari Kost</option>
-                                                    <option value="pegawai">Pegawai Kost</option>
-                                                    <option value="tukang">Tukang</option>
-                                                    <option value="toko">Toko</option>
-                                                </select>
-                                            </div>
-    
-                                        <div id = "divcek" class = "collapse show">
-                                            <h6>Cari Melalui</h6>
-                                            <div class="form-group">
-                                                <div class="input-with-icon">
-                                                    <input type="text" class="form-control" placeholder="KTP / Nama"
-                                                    id="txtcari" oninput="getBlacklist()" autofocus>
-                                                    <i class="ti-search"></i>
-                                                </div>
-                                            </div>
-                                            <button id="btncek" type="button" class="btn btn-theme full-width bg-2" onclick="getBlacklist()">Cek</button>
-                                        </div> -->
-    
-                                        <!-- <div id = "divtambah" class = "collapse">
-                                            <div class="form-group">
-                                                <div class="input-with-icon">
-                                                    <h6>Kota</h6>
-                                                    <input type="text" class="form-control" placeholder="Surabaya"
-                                                    id="txtkota">
-                                                    <h6>No Identitas</h6>
-                                                    <input type="text" class="form-control" placeholder="357xxxxxxxxxx"
-                                                    id="txtidentitas">
-                                                    <h6>Nama</h6>
-                                                    <input type="text" class="form-control" placeholder="Rudy"
-                                                    id="txtnama1">
-                                                    <h6>Telp</h6>
-                                                    <input type="text" class="form-control" placeholder="081xxxxxxxxx"
-                                                    id="txttelp1">
-                                                    <h6>Keterangan</h6>
-                                                    <input type="text" class="form-control" placeholder="Kabur tidak bayar kos"
-                                                    id="txtketerangan">
-                                                    <h6>Bukti</h6>
-                                                    <input type="file" class="form-control"
-                                                    id="txtbukti">
-                                                </div>
-                                                <button id="btnsimpan" type="button" class="btn btn-theme full-width bg-2" onclick="setBlacklist()">Simpan</button>
-                                            </div>
-                                        </div> -->
-                                <!--
-                                    <div class="col-lg-8">
-                                        <table class="table" id="tabelblacklist" style = "width:100%;">
-                                            <thead>
-                                                <tr>
-                                                    <th style="text-align:left;width:1%;">Kota</th>
-                                                    <th style="text-align:left;width:1%;">Identitas</th>
-                                                    <th style="text-align:left;width:1%;">Nama</th>
-                                                    <th style="text-align:left;width:1%;">Telp</th>
-                                                    <th style="text-align:left;width:auto;">Keterangan</th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="dtblacklist">
+                                        <h3>Daftar Blacklist Anda</h3>
+                                        <table class="property-table-wrap responsive-table bkmark">
+                                            <tbody id="blacklist">
                                                 
                                             </tbody>
                                         </table>
                                     </div>
-                                -->
                                 </div>
                             </div>
                             <!-- Pagination -->
@@ -237,6 +177,7 @@
         {
             $("#cariBlacklistSection").collapse('hide');
             $("#tambahBlacklistSection").collapse('show');
+            getMyBlacklist();
             clearinput();
         }
         function clearinput()
@@ -315,22 +256,6 @@
 		{
             event.preventDefault();
 
-            // let formElement = document.querySelector('form#divtambah');
-
-            // let newFormData = new FormData(formElement);
-
-            // for (let value of newFormData.values()) {
-            //     console.log(value);
-            // }
-
-            // return;
-
-            // // console.log(newFormData.values('txtkota'));
-            // // return;
-
-            // // console.log('masuk');
-
-            // var formData = new FormData($('#formAddBlacklist')[0]);
             let formData = new FormData();
 
             let file = $('#tambahBuktiBlacklist')[0].files[0];
@@ -355,22 +280,12 @@
                 processData: false,  // tell jQuery not to process the data
                 contentType: false,  // tell jQuery not to set contentType
                 async: false,
-                // data : {
-                //     jenis       :$('#tambahJenisBlacklist').val(), 
-                //     kota        :$('#tambahKotaBlacklist').val(), 
-                //     identitas   :$('#tambahIdentitasBlacklist').val(), 
-                //     nama        :$('#tambahNamaBlacklist').val(), 
-                //     telp        :$('#tambahTelponBlacklist').val(), 
-                //     keterangan  :$('#tambahKeteranganBlacklist').val(),
-
-                //     //submit_by:"{{ Cookie::get('email') }}",
-                // },
                 success : function(response){
                     let data = response.data;
                     if(response.status)
                     {
                         alert(response.message);
-                        // getBlacklist();
+                        getMyBlacklist();
                         clearinput();
                         console.log(response.data);
                     }
@@ -439,6 +354,61 @@
             }
 
             $("#dtblacklist2").html(html2);
+        }
+
+        async function getMyBlacklist() {
+            // Check if input's length more than 5 character, then autosearch is on
+            // This make the server not heavy query if the input is very short for auto search
+
+            // Make HTML Element using Javascript for blacklist
+            let html2 = "";
+            let email = "{{Cookie::get('email')}}";
+
+            console.log(email)
+            await $.ajax({
+                type: "GET",
+                url: "{{ url('/api/getBlacklist') }}",
+                dataType: "json",
+                headers: {
+                    Authorization: "Bearer {{ Cookie::get('api_token') }}"
+                },
+                data: {
+                    email       : email
+                },
+                success: function(response) {
+                    let data = response.data;
+                    console.log(data);
+                    if (response.status) {
+                        // Make sure the data of blacklist minimal 1
+                        if (data.length !== 0) {
+                            for (let i = 0; i < data.length; i++) {
+                                html2 += `<tr>
+                                            <td class="dashboard_propert_wrapper">
+                                                <img src="https://via.placeholder.com/1400x720" alt="">
+                                                <div class="title">
+                                                    <h3 id="spannama">${data[i].nama}</h3>
+                                                    <h4><a href="#">${data[i].identitas}</a></h4>
+                                                    <span>Telp : ${data[i].telp}</span>
+                                                    <span>Keterangan : ${data[i].keterangan}</span>
+                                                </div>
+                                            </td>
+                                        </tr>`;
+                            }
+                        } else {
+                            // Give a feedback for user if doesnt exist data with input
+                            html2 =
+                                "<h4>Anda belum memasukkan data blacklist</h4>";
+                        }
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function(err) {
+                    alert("Error, hubungi admin");
+                }
+            });
+
+            $("#blacklist").html(html2);
         }
 	</script>
 @stop

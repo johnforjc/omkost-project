@@ -45,9 +45,11 @@
                 {
                     console.log(data.user);
                     document.cookie = "admin=" + data.user.isAdmin + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+                    document.cookie = "telp=" + data.user.telp + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
                     document.cookie = "nama=" + data.user.name + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/"; 
                     document.cookie = "email=" + data.user.email + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/"; 
                     document.cookie = "api_token=" + data.token + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/"; 
+                    document.cookie = "id=" + data.user.id + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/"; 
                     //location.reload();
                     window.location = "{{ url('/dashboard') }}";
                 }

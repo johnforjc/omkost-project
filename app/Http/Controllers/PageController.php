@@ -29,7 +29,16 @@ class PageController extends Controller
 	}
 	
 	public function profil(Request $request){
-		if($request->cookie('nama')) return view('profil');
+		if($request->cookie('nama')){
+			// $user["name"] = $request->cookie('nama');
+			$user = [
+				'name' 	=> $request->cookie('nama'),
+				'telp' 	=> $request->cookie('telp'),
+				'email'	=> $request->cookie('email'),
+				'id' 	=> $request->cookie('id')
+			];
+			return view('profil', ['user' => $user]);
+		}
 		else return redirect('/');
 	}
 

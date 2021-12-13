@@ -26,7 +26,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::get('logout', 'LoginController@logout');
     
     Route::post('setBlacklist', 'BlacklistController@set');
-    Route::get('getBlacklist', 'BlacklistController@get');
+    Route::get('getBlacklist', 'BlacklistController@get');    
     Route::put('validateBacklist', 'BlacklistController@validateBacklist');
     Route::delete('deleteBlacklist', 'BlacklistController@delete');
 

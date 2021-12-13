@@ -19,7 +19,7 @@ class TokoController extends Controller
     {
         if ($request->cookie('admin')){
             return redirect('/admintoko');
-        } else if($request->cookie('name')){
+        } else if($request->cookie('nama')){
             return view('toko');
         } else{
             return redirect('/');
@@ -65,6 +65,15 @@ class TokoController extends Controller
             } else {
                 $toko = Toko::whereNotNull('validate_by')->get();
             }
+
+            return response()->json([
+                'status'        => true,
+                'data'          => $toko
+            ], 200);
+        }
+        else if($request->filled('email')){
+            $toko = Toko::where('submit_by', 'like', '%'.request('email').'%')
+                                    ->get();
 
             return response()->json([
                 'status'        => true,

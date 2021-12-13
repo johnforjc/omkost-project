@@ -14,7 +14,7 @@ class TukangController extends Controller
     {
         if ($request->cookie('admin')){
             return redirect('/admintukang');
-        } else if($request->cookie('name')){
+        } else if($request->cookie('nama')){
             return view('tukang');
         } else{
             return redirect('/');
@@ -62,6 +62,15 @@ class TukangController extends Controller
             } else {
                 $tukang = Tukang::whereNotNull('validate_by')->get();
             }
+
+            return response()->json([
+                'status'        => true,
+                'data'          => $tukang
+            ], 200);
+        }
+        else if($request->filled('email')){
+            $tukang = Tukang::where('submit_by', 'like', '%'.request('email').'%')
+                                    ->get();
 
             return response()->json([
                 'status'        => true,

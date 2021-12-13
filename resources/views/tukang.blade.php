@@ -64,16 +64,7 @@
                                     <h3>Hasil Pencarian</h3>
                                     <table class="property-table-wrap responsive-table bkmark">
                                         <tbody id="dttukang2">
-                                            <thead>
-                                                <tr>
-                                                    <th style="text-align:left;width:1%;">Kota</th>
-                                                    <th style="text-align:left;width:auto;">Nama</th>
-                                                    <th style="text-align:left;width:1%;">Telp</th>
-                                                    <th style="text-align:left;width:auto;">Keterangan</th>
-                                                    <th style="text-align:left;width:1%;">Referensi</th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
+                                            
                                         </tbody>
                                     </table>
                                 </div>
@@ -117,28 +108,13 @@
                                     <div class="form-group">
                                         <button id="btnsimpan" type="button" class="btn btn-theme full-width bg-2" onclick="setTukang()">Rekomendasikan</button>
                                     </div>
-                                </div>
 
-                                
-                                <!--
-                                    <div class="col-lg-8">
-                                        <table class="table" id="tabeltukang" style = "width:100%;">
-                                            <thead>
-                                                <tr>
-                                                    <th style="text-align:left;width:1%;">Kota</th>
-                                                    <th style="text-align:left;width:1%;">Identitas</th>
-                                                    <th style="text-align:left;width:1%;">Nama</th>
-                                                    <th style="text-align:left;width:1%;">Telp</th>
-                                                    <th style="text-align:left;width:auto;">Keterangan</th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="dttukang">
-                                                
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                -->
+                                    <h3>Daftar Tukang Anda</h3>
+                                    <table class="property-table-wrap responsive-table bkmark">
+                                        <tbody id="tukang">
+                                            
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
 
@@ -211,6 +187,7 @@
         {
             $("#cariTukangSection").collapse('hide');
             $("#tambahTukangSection").collapse('show');
+            getMyTukang();
             clearinput();
         }
         function clearinput()
@@ -245,7 +222,7 @@
                     if(response.status)
                     {
                         alert(response.message);
-                        getTukang();
+                        getMyTukang();
                         clearinput();
                     }
                     else
@@ -284,11 +261,15 @@
                         } else {
                             for(let i=0; i<data.length; i++){
                                 html += `<tr>
-                                            <td style="text-align:left;">${data[i].kota}</td>
-                                            <td style="text-align:left;">${data[i].nama}</td>
-                                            <td style="text-align:left;">${data[i].telp}</td>
-                                            <td style="text-align:left;">${data[i].keterangan}</td>
-                                            <td style="text-align:left;">${data[i].submit_by}</td>
+                                            <td class="dashboard_propert_wrapper" class="row">
+                                                <img class="col-md-3" src="https://via.placeholder.com/1400x720" alt="">
+                                                <div class="title col-md-6">
+                                                    <h3 id="spannama">${data[i].nama}</h3>
+                                                    <h4><a href="#">${data[i].telp}</a></h4>
+                                                    <span>Kota : ${data[i].kota}</span>
+                                                    <span>Keterangan :${data[i].keterangan}</span>
+                                                </div>                                                
+                                            </td>
                                         </tr>`;
                             }
                         }
@@ -304,6 +285,66 @@
                     alert("Error, hubungi admin")
                 }
             });
+        }
+
+        async function getMyTukang() {
+            // Check if input's length more than 5 character, then autosearch is on
+            // This make the server not heavy query if the input is very short for auto search
+
+            // Make HTML Element using Javascript for blacklist
+            let html2 = "";
+            let email = "{{Cookie::get('email')}}";
+
+            console.log(email)
+            await $.ajax({
+                type: "GET",
+                url: "{{ url('/api/getTukang') }}",
+                dataType: "json",
+                headers: {
+                    Authorization: "Bearer {{ Cookie::get('api_token') }}"
+                },
+                data: {
+                    email       : email
+                },
+                success: function(response) {
+                    let data = response.data;
+                    console.log(data);
+                    if (response.status) {
+                        // Make sure the data of blacklist minimal 1
+                        if (data.length !== 0) {
+                            for (let i = 0; i < data.length; i++) {
+                                html2 += `<tr>
+                                            <td class="dashboard_propert_wrapper" class="row">
+                                                <img class="col-md-3" src="https://via.placeholder.com/1400x720" alt="">
+                                                <div class="title col-md-6">
+                                                    <h3 id="spannama">${data[i].nama}</h3>
+                                                    <h4><a href="#">${data[i].telp}</a></h4>
+                                                    <span>Kota : ${data[i].kota}</span>
+                                                    <span>Keterangan :${data[i].keterangan}</span>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="btn btn-primary">Update</div>
+                                                    <div class="btn btn-primary">Delete</div>
+                                                </div>
+                                                
+                                            </td>
+                                        </tr>`;
+                            }
+                        } else {
+                            // Give a feedback for user if doesnt exist data with input
+                            html2 =
+                                "<h4>Anda belum memasukkan data tukang</h4>";
+                        }
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function(err) {
+                    alert("Error, hubungi admin");
+                }
+            });
+
+            $("#tukang").html(html2);
         }
 	</script>
 @stop
