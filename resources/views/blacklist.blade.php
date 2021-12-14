@@ -122,6 +122,28 @@
                                             <tbody id="blacklist">
                                                 
                                             </tbody>
+
+                                            <!-- Button trigger modal -->
+                                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body" id="modal-body-data">
+                                                                
+                                                            </div>
+                                                            <div class="modal-footer" id="modal-action-data">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                <button type="button" class="btn btn-primary">Save changes</button>
+                                                            </div>
+                                                    </div>    
+                                                </div>
+                                            </div>
+                                            
                                         </table>
                                     </div>
                                 </div>
@@ -191,37 +213,7 @@
             $('#cariNamaBlacklist').val("");
         }
 
-        function validateBlacklist(){
-            $.ajax({
-                type  : 'PUT',
-                url   : "{{ url('/api/validateBacklist') }}",
-                dataType : 'json',
-                headers: {
-                    "Authorization" : "Bearer {{ Cookie::get('api_token') }}",
-                },
-                data: {
-                    id : '1'
-                },
-                success : function(response){
-                    let data = response.data;
-                    if(response.status)
-                    {
-                        alert(response.message);
-                        getBlacklist();
-                        clearinput();
-                    }
-                    else
-                    {
-                        alert(response.message);
-                    }
-                },
-                error: function(err){
-                    alert("Error, hubungi admin")
-                }
-            });
-        }
-
-        function deleteBlacklist(){
+        function deleteBlacklist(id){
             $.ajax({
                 type  : 'DELETE',
                 url   : "{{ url('/api/deleteBlacklist') }}",
@@ -230,14 +222,14 @@
                     "Authorization" : "Bearer {{ Cookie::get('api_token') }}",
                 },
                 data: {
-                    id : '23'
+                    id : id
                 },
                 success : function(response){
                     let data = response.data;
                     if(response.status)
                     {
                         alert(response.message);
-                        getBlacklist();
+                        getMyBlacklist();
                         clearinput();
                     }
                     else
@@ -246,14 +238,113 @@
                     }
                 },
                 error: function(err){
-                    console.log("masuk sini")
                     alert("Error, hubungi admin")
                 }
             });
         }
 
-        function setBlacklist()
-		{
+        function updateBlacklist(id){
+            let formData = new FormData();
+
+            let file = $('#updateBuktiBlacklist')[0].files[0];
+
+            console.log(file);
+            if(file) formData.append('bukti', file);
+
+            formData.append('id', `${id}`);
+            formData.append('kota', $('#updateKotaBlacklist').val());
+            formData.append('identitas', $('#updateIdentitasBlacklist').val());
+            formData.append('nama', $('#updateNamaBlacklist').val());
+            formData.append('telp', $('#updateTelponBlacklist').val());
+            formData.append('keterangan', $('#updateKeteranganBlacklist').val());
+
+            for (let pair of formData.entries()) {
+                console.log(pair[0]+ ', ' + pair[1]); 
+            }  
+            
+            $.ajax({
+                type  : 'POST',
+                url   : "{{ url('/api/updateBlacklist') }}",
+                dataType : 'json',
+                headers: {
+                    "Authorization" : "Bearer {{ Cookie::get('api_token') }}",
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data    : formData,
+                cache: false,
+                processData: false,  // tell jQuery not to process the data
+                contentType: false,  // tell jQuery not to set contentType
+                async: false,
+                success : function(response){
+                    let data = response.data;
+                    if(response.status)
+                    {
+                        alert(response.message);
+                        getMyBlacklist();
+                        clearinput();
+                    }
+                    else
+                    {
+                        alert(response.message);
+                    }
+                },
+                error: function(err){
+                    alert("Error, hubungi admin")
+                }
+            });
+
+            // let formData = new FormData();
+
+            // let file = $('#updateBuktiBlacklist')[0].files[0];
+
+            // if(file){
+            //     formData.append('bukti', file);
+            // } else {
+            //     formData.append('bukti', null);
+            // }
+
+
+            // formData.append('id', id);
+            // formData.append('kota', $('#updateKotaBlacklist').val());
+            // formData.append('identitas', $('#updateIdentitasBlacklist').val());
+            // formData.append('nama', $('#updateNamaBlacklist').val());
+            // formData.append('telp', $('#updateTelponBlacklist').val());
+            // formData.append('keterangan', $('#updateKeteranganBlacklist').val());
+
+            // $.ajax({
+            //     type  : 'PUT',
+            //     url   : "{{ url('/api/updateBlacklist') }}",
+            //     dataType : 'json',
+            //     headers: {
+            //         "Authorization" : "Bearer {{ Cookie::get('api_token') }}",
+            //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            //     },
+            //     data    : formData,
+            //     cache: false,
+            //     processData: false,  // tell jQuery not to process the data
+            //     contentType: false,  // tell jQuery not to set contentType
+            //     async: false,
+            //     success : function(response){
+            //         let data = response.data;
+            //         if(response.status)
+            //         {
+            //             alert(response.message);
+            //             getMyBlacklist();
+            //             clearinput();
+            //             console.log(response.data);
+            //         }
+            //         else
+            //         {
+            //             alert(response.message);
+            //         }
+            //     },
+            //     error: function(err){
+            //         alert("Error, hubungi admin")
+            //     }
+            // });
+        }
+
+        function setBlacklist(){
             event.preventDefault();
 
             let formData = new FormData();
@@ -287,7 +378,6 @@
                         alert(response.message);
                         getMyBlacklist();
                         clearinput();
-                        console.log(response.data);
                     }
                     else
                     {
@@ -364,7 +454,6 @@
             let html2 = "";
             let email = "{{Cookie::get('email')}}";
 
-            console.log(email)
             await $.ajax({
                 type: "GET",
                 url: "{{ url('/api/getBlacklist') }}",
@@ -377,7 +466,6 @@
                 },
                 success: function(response) {
                     let data = response.data;
-                    console.log(data);
                     if (response.status) {
                         // Make sure the data of blacklist minimal 1
                         if (data.length !== 0) {
@@ -385,11 +473,21 @@
                                 html2 += `<tr>
                                             <td class="dashboard_propert_wrapper">
                                                 <img src="https://via.placeholder.com/1400x720" alt="">
-                                                <div class="title">
+                                                <div class="title col-md-6">
                                                     <h3 id="spannama">${data[i].nama}</h3>
                                                     <h4><a href="#">${data[i].identitas}</a></h4>
                                                     <span>Telp : ${data[i].telp}</span>
                                                     <span>Keterangan : ${data[i].keterangan}</span>
+                                                </div>
+                                                
+                                                <div class="col-md-3">
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-mode="update" data-nama="${data[i].nama}"
+                                                    data-id="${data[i].id}" data-keterangan="${data[i].keterangan}" data-telpon="${data[i].telp}" data-identitas="${data[i].identitas}" data-kota="${data[i].kota}">
+                                                    Update
+                                                    </button>
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-mode="delete" data-id="${data[i].id}">
+                                                    Delete
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>`;
@@ -410,5 +508,75 @@
 
             $("#blacklist").html(html2);
         }
+
+        $('#exampleModal').on('show.bs.modal', function (event) {
+            let button = $(event.relatedTarget);
+            let mode = button.data('mode');
+
+            if(mode == "delete"){
+                let modal = $(this);
+                modal.find('.modal-title').text('Konfirmasi Penghapusan Data');
+                $('#modal-body-data').html(`
+                    <p>Apakah anda yakin menghapus data blacklist ini?</p>
+                `);
+                $('#modal-action-data').html(`
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" onclick="deleteBlacklist(${button.data('id')})">Hapus</button>
+                `);
+            }
+
+            if(mode == "update"){
+                let modal = $(this);
+                modal.find('.modal-title').text('Ubah Data');
+                let data = {
+                    id          : button.data('id'),
+                    nama        : button.data('nama'),
+                    keterangan  : button.data('keterangan'),
+                    telpon      : button.data('telpon'),
+                    identitas   : button.data('identitas'),
+                    kota        : button.data('kota'),
+                }
+                $('#modal-body-data').html(`
+                    <form enctype="multipart/form-data" onsubmit="updateBlacklist()" id="updateBlacklist">
+                        <div class="row d-flex justify-content-between form-group">
+                            <div class="col-12 mb-2">
+                                <h6>Kota</h6>
+                                <input type="text" class="form-control" placeholder="Surabaya" id="updateKotaBlacklist" value=${data["kota"]}>
+                            </div>
+                            
+                            <div class="col-12 mb-2">
+                                <h6>No Identitas</h6>
+                                <input type="text" class="form-control" placeholder="357xxxxxxxxxx"id="updateIdentitasBlacklist" value=${data["identitas"]}>
+                            </div>
+                            
+                            <div class="col-12 mb-2">
+                                <h6>Nama</h6>
+                                <input type="text" class="form-control" placeholder="Rudy" id="updateNamaBlacklist" value=${data["nama"]}>
+                            </div>
+                            
+                            <div class="col-12 mb-2">
+                                <h6>Telp</h6>
+                                <input type="text" class="form-control" placeholder="081xxxxxxxxx" id="updateTelponBlacklist" value=${data["telpon"]}>
+                            </div>
+                            
+                            <div class="col-12 mb-2">
+                                <h6>Keterangan</h6>
+                                <input type="text" class="form-control" placeholder="Kabur tidak bayar kos" id="updateKeteranganBlacklist" value=${data["keterangan"]}>
+                            </div>
+
+                            <div class="col-12 mb-2">
+                                <h6>Bukti</h6>
+                                <input type="file" class="form-control" id="updateBuktiBlacklist">
+                            </div>
+                        </div>
+                    </form>
+                `);
+                $('#modal-action-data').html(`
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" onclick="updateBlacklist(${data['id']})">Simpan</button>
+                `);
+            }
+            
+            })
 	</script>
 @stop

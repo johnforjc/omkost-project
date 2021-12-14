@@ -41,7 +41,6 @@ class TukangController extends Controller
             'kota'          => $request['kota'],
             'nama'          => $request['nama'],
             'telp'          => $request['telp'],
-            'alamat'        => $request['alamat'],
             'keterangan'    => $request['keterangan'],
             'submit_by'     => $user->email,
             'submit_at'     => Carbon::now(),
@@ -104,7 +103,6 @@ class TukangController extends Controller
         $user = Auth::user();
         
         $request->validate([
-            'jenis'     =>'required',
             'kota'      =>'required',
             'nama'      =>'required',
         ]);        
@@ -112,13 +110,20 @@ class TukangController extends Controller
         // Cari tukang yang akan diupdate
         $tukang = Tukang::find($request->id);
 
+        if($user->email != $tukang->submit_by){
+            return response()->json([
+                "status"        => "Failed",
+                "message"       => "Anda tidak berhak mengubah data ini"
+            ], 401);
+        }
+
         // Simpan perubahan dari form
-        $tukang->jenis      = $request['jenis'];
         $tukang->kota       = $request['kota'];
         $tukang->nama       = $request['nama'];
         $tukang->telp       = $request['telp'];
-        $tukang->alamat     = $request['alamat'];
         $tukang->keterangan = $request['keterangan'];
+        $tukang->validate_by  = null;
+        $tukang->validate_at  = null;
         
         $tukang->save();
 

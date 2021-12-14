@@ -85,7 +85,7 @@
         function validateBlacklist(id){
             $.ajax({
                 type  : 'PUT',
-                url   : "{{ url('/api/validateBacklist') }}",
+                url   : "{{ url('/api/validateBlacklist') }}",
                 dataType : 'json',
                 headers: {
                     "Authorization" : "Bearer {{ Cookie::get('api_token') }}",

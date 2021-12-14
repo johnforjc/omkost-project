@@ -113,28 +113,38 @@ class BlacklistController extends Controller
         }
     }
 
-    public function update(Request $request)
+    public function updateBlacklist(Request $request)
     {
-        $user = Auth::user();
-        
-        $request->validate([
-            'jenis'=>'required',
-            'kota'=>'required',
-            'identitas'=>'required',
-            'nama'=>'required',
-            'telp'=>'required',
-            'keterangan'=>'required',
-            'bukti'=>'required',
-        ]);   
+        $user = Auth::user();      
 
         $blacklist = Blacklist::find($request->id);
 
-        $blacklist->jenis =  $request->get('jenis');
-        $blacklist->identitas = $request->get('identitas');
-        $blacklist->nama = $request->get('nama');
-        $blacklist->telp = $request->get('telp');
-        $blacklist->keterangan = $request->get('keterangan');
-        $blacklist->bukti = $request->get('bukti');
+        if($user->email != $blacklist->submit_by){
+            return response()->json([
+                "status"        => "Failed",
+                "message"       => "Anda tidak berhak mengubah data ini"
+            ], 401);
+        }
+
+        $path = '';
+        
+        if($request->file( 'bukti' )){
+            $file = $request->file('bukti');
+            $filename = $file->getClientOriginalName();
+            $filename = $user->id . time() . $filename;
+
+            $path = $file->storeAs('/', $filename);
+        } else {
+            $path = $blacklist->bukti;
+        }
+
+        $blacklist->identitas = $request['identitas'];
+        $blacklist->nama = $request['nama'];
+        $blacklist->telp = $request['telp'];
+        $blacklist->keterangan = $request['keterangan'];
+        $blacklist->bukti = $path;
+        $blacklist->validate_by  = null;
+        $blacklist->validate_at  = null;
         $blacklist->save();
 
         $response['status'] = true;
@@ -144,7 +154,7 @@ class BlacklistController extends Controller
         return response()->json($response, 200);
     }
 
-    public function validateBacklist(Request $request){
+    public function validateBlacklist(Request $request){
         // validasi blacklist oleh admin
         $user = Auth::user();
         

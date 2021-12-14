@@ -107,7 +107,6 @@ class TokoController extends Controller
         $user = Auth::user();
         
         $request->validate([
-            'jenis'         =>'required',
             'kota'          =>'required',
             'nama'          =>'required',
             'telp'          =>'required',
@@ -117,12 +116,20 @@ class TokoController extends Controller
 
         $toko = Toko::find($request->id);
 
-        $toko->jenis        = $request->get('jenis');
+        if($user->email != $toko->submit_by){
+            return response()->json([
+                "status"        => "Failed",
+                "message"       => "Anda tidak berhak mengubah data ini"
+            ], 401);
+        }
+
         $toko->kota         = $request->get('kota');
         $toko->nama         = $request->get('nama');
         $toko->telp         = $request->get('telp');
         $toko->alamat       = $request->get('alamat');
         $toko->keterangan   = $request->get('keterangan');
+        $toko->validate_by  = null;
+        $toko->validate_at  = null;
         $toko->save();
 
         $response['status'] = true;

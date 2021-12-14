@@ -124,6 +124,25 @@
                                     </table>
                                 </div>
 
+                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body" id="modal-body-data">
+                                                    
+                                                </div>
+                                                <div class="modal-footer" id="modal-action-data">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                                </div>
+                                        </div>    
+                                    </div>
+                                </div>
                                 </div>
                             </div>
 
@@ -208,6 +227,72 @@
             $('#tambahKeteranganToko').val("");
             $('#cariNamaToko').val("");
             $('#cariKotaToko').val("");
+        }
+
+        function deleteToko(id){
+            $.ajax({
+                type  : 'DELETE',
+                url   : "{{ url('/api/deleteToko') }}",
+                dataType : 'json',
+                headers: {
+                    "Authorization" : "Bearer {{ Cookie::get('api_token') }}",
+                },
+                data: {
+                    id : id
+                },
+                success : function(response){
+                    let data = response.data;
+                    if(response.status)
+                    {
+                        alert(response.message);
+                        getMyToko();
+                        clearinput();
+                    }
+                    else
+                    {
+                        alert(response.message);
+                    }
+                },
+                error: function(err){
+                    alert("Error, hubungi admin")
+                }
+            });
+        }
+
+        function updateToko(id)
+		{
+            $.ajax({
+                type  : 'PUT',
+                url   : "{{ url('/api/updateToko') }}",
+                dataType : 'json',
+                headers: {
+                    "Authorization" : "Bearer {{ Cookie::get('api_token') }}"
+                },
+                data : {
+                    id          :id,
+                    kota        :$('#updateKota').val(), 
+                    nama        :$('#updateNama').val(), 
+                    telp        :$('#updateTelpon').val(),
+                    alamat      :$('#updateAlamat').val(),
+                    keterangan  :$('#updateKeterangan').val()
+                },
+                success : function(response){
+                    //let data = response.data;
+                    if(response.status)
+                    {
+                        alert(response.message);
+                        getMyToko();
+                        clearinput();
+                    }
+                    else
+                    {
+                        alert(response.message);
+                    }
+                },
+                error: function(err){
+                    alert("Error, hubungi admin")
+                }
+            });
         }
 
         function setToko()
@@ -336,8 +421,13 @@
                                                     <span>${data[i].validate_at ? "Sudah Validasi" : "Belum Tervalidasi"}</span>
                                                 </div>
                                                 <div class="col-md-3">
-                                                    <div class="btn btn-primary">Update</div>
-                                                    <div class="btn btn-primary">Delete</div>
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-mode="update" data-nama="${data[i].nama}"
+                                                    data-id="${data[i].id}" data-keterangan="${data[i].keterangan}" data-telpon="${data[i].telp}" data-alamat="${data[i].alamat}" data-kota="${data[i].kota}">
+                                                    Update
+                                                    </button>
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-mode="delete" data-id="${data[i].id}">
+                                                    Delete
+                                                    </button>
                                                 </div>
                                             
                                                 
@@ -361,5 +451,70 @@
             $("#toko").html(html2);
         }
 
+        $('#exampleModal').on('show.bs.modal', function (event) {
+            let button = $(event.relatedTarget);
+            let mode = button.data('mode');
+
+            if(mode == "delete"){
+                let modal = $(this);
+                modal.find('.modal-title').text('Konfirmasi Penghapusan Data');
+                $('#modal-body-data').html(`
+                    <p>Apakah anda yakin menghapus data toko ini?</p>
+                `);
+                $('#modal-action-data').html(`
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" onclick="deleteToko(${button.data('id')})">Hapus</button>
+                `);
+            }
+
+            if(mode == "update"){
+                let modal = $(this);
+                modal.find('.modal-title').text('Ubah Data');
+                let data = {
+                    id          : button.data('id'),
+                    nama        : button.data('nama'),
+                    keterangan  : button.data('keterangan'),
+                    telpon      : button.data('telpon'),
+                    alamat      : button.data('alamat'),
+                    kota        : button.data('kota'),
+                }
+                $('#modal-body-data').html(`
+                    <form enctype="multipart/form-data" id="updateToko">
+                        <div class="row d-flex justify-content-between form-group">
+                            <div class="col-12 mb-2">
+                                <h6>Kota</h6>
+                                <input type="text" class="form-control" placeholder="Surabaya" id="updateKota" value=${data["kota"]}>
+                            </div>
+                            
+                            <div class="col-12 mb-2">
+                                <h6>Alamat</h6>
+                                <input type="text" class="form-control" id="updateAlamat" value=${data["alamat"]}>
+                            </div>
+                            
+                            <div class="col-12 mb-2">
+                                <h6>Nama</h6>
+                                <input type="text" class="form-control" placeholder="Rudy" id="updateNama" value=${data["nama"]}>
+                            </div>
+                            
+                            <div class="col-12 mb-2">
+                                <h6>Telp</h6>
+                                <input type="text" class="form-control" placeholder="081xxxxxxxxx" id="updateTelpon" value=${data["telpon"]}>
+                            </div>
+                            
+                            <div class="col-12 mb-2">
+                                <h6>Keterangan</h6>
+                                <input type="text" class="form-control" placeholder="Kabur tidak bayar kos" id="updateKeterangan" value=${data["keterangan"]}>
+                            </div>
+                        </div>
+                    </form>
+                `);
+                $('#modal-action-data').html(`
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" onclick="updateToko(${data['id']})">Simpan</button>
+                `);
+            }
+            
+            })
+            
 	</script>
 @stop
