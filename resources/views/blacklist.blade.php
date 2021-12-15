@@ -292,56 +292,6 @@
                     alert("Error, hubungi admin")
                 }
             });
-
-            // let formData = new FormData();
-
-            // let file = $('#updateBuktiBlacklist')[0].files[0];
-
-            // if(file){
-            //     formData.append('bukti', file);
-            // } else {
-            //     formData.append('bukti', null);
-            // }
-
-
-            // formData.append('id', id);
-            // formData.append('kota', $('#updateKotaBlacklist').val());
-            // formData.append('identitas', $('#updateIdentitasBlacklist').val());
-            // formData.append('nama', $('#updateNamaBlacklist').val());
-            // formData.append('telp', $('#updateTelponBlacklist').val());
-            // formData.append('keterangan', $('#updateKeteranganBlacklist').val());
-
-            // $.ajax({
-            //     type  : 'PUT',
-            //     url   : "{{ url('/api/updateBlacklist') }}",
-            //     dataType : 'json',
-            //     headers: {
-            //         "Authorization" : "Bearer {{ Cookie::get('api_token') }}",
-            //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            //     },
-            //     data    : formData,
-            //     cache: false,
-            //     processData: false,  // tell jQuery not to process the data
-            //     contentType: false,  // tell jQuery not to set contentType
-            //     async: false,
-            //     success : function(response){
-            //         let data = response.data;
-            //         if(response.status)
-            //         {
-            //             alert(response.message);
-            //             getMyBlacklist();
-            //             clearinput();
-            //             console.log(response.data);
-            //         }
-            //         else
-            //         {
-            //             alert(response.message);
-            //         }
-            //     },
-            //     error: function(err){
-            //         alert("Error, hubungi admin")
-            //     }
-            // });
         }
 
         function setBlacklist(){
@@ -472,7 +422,9 @@
                             for (let i = 0; i < data.length; i++) {
                                 html2 += `<tr>
                                             <td class="dashboard_propert_wrapper">
-                                                <img src="https://via.placeholder.com/1400x720" alt="">
+                                            <div class="col-md-3">
+                                                <img src="storage/${data[i].bukti}" alt="">
+                                            </div>
                                                 <div class="title col-md-6">
                                                     <h3 id="spannama">${data[i].nama}</h3>
                                                     <h4><a href="#">${data[i].identitas}</a></h4>

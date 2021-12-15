@@ -46,7 +46,7 @@ class BlacklistController extends Controller
         $filename = $file->getClientOriginalName();
         $filename = $user->id . time() . $filename;
 
-        $path = $file->storeAs('/', $filename);
+        $path = $file->storeAs('/public', $filename);
 
         Blacklist::create([
             'jenis' => $request['jenis'],
@@ -55,7 +55,7 @@ class BlacklistController extends Controller
             'nama' => $request['nama'],
             'telp' => $request['telp'],
             'keterangan' => $request['keterangan'],
-            'bukti' => $path,
+            'bukti' => $filename,
             'submit_by' => $user->email,
             'submit_at' => Carbon::now(),
         ]);
@@ -126,23 +126,23 @@ class BlacklistController extends Controller
             ], 401);
         }
 
-        $path = '';
+        $filename = '';
         
         if($request->file( 'bukti' )){
             $file = $request->file('bukti');
             $filename = $file->getClientOriginalName();
             $filename = $user->id . time() . $filename;
 
-            $path = $file->storeAs('/', $filename);
+            $path = $file->storeAs('/public', $filename);
         } else {
-            $path = $blacklist->bukti;
+            $filename = $blacklist->bukti;
         }
 
         $blacklist->identitas = $request['identitas'];
         $blacklist->nama = $request['nama'];
         $blacklist->telp = $request['telp'];
         $blacklist->keterangan = $request['keterangan'];
-        $blacklist->bukti = $path;
+        $blacklist->bukti = $filename;
         $blacklist->validate_by  = null;
         $blacklist->validate_at  = null;
         $blacklist->save();
