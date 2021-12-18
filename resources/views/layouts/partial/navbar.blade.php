@@ -54,7 +54,7 @@
 						</li>
 					</ul>
 				@else
-					<ul class="nav-menu nav-menu-social align-to-right dhsbrd">
+					<ul class="nav-menu align-to-right dhsbrd">
 						
 						<li class="add-listing bg-white">
 							<a href="#" data-toggle="modal" data-target="#login" class="text-blue">

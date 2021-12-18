@@ -81,6 +81,35 @@ class LoginController extends Controller
         return response()->json($response, 200);
         
     }
+
+    public function resetPassword(Request $request){
+        // validasi password apakah sama 
+        $validate = Validator::make($request->all(),[
+            'id'            => ['required'],
+            'password'      => ['required', 'string'],
+            'newPassword'   => ['required', 'string'],
+        ]);
+
+        if($validate->fails()){
+            $response['status'] = false;
+            $response['message'] = 'Reset Password Gagal';
+            $response['error'] = $validate->errors();
+            
+            return response()->json($response, 422);
+        }
+
+        $user = User::find($request->id);
+
+        if(Hash::check($request->password, $user->password)){
+            $user->password = Hash::make($request->newPassword);
+            $user->save();
+
+            return response()->json([
+                'status'    => true,
+                'message'   => 'Reset Password Berhasil'
+            ], 201);
+        }
+    }
     
     public function profile(Request $request)
     {
