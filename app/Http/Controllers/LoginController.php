@@ -83,9 +83,10 @@ class LoginController extends Controller
     }
 
     public function resetPassword(Request $request){
+        $user = Auth::user();
+
         // validasi password apakah sama 
         $validate = Validator::make($request->all(),[
-            'id'            => ['required'],
             'password'      => ['required', 'string'],
             'newPassword'   => ['required', 'string'],
         ]);
@@ -97,9 +98,7 @@ class LoginController extends Controller
             
             return response()->json($response, 422);
         }
-
-        $user = User::find($request->id);
-
+        
         if(Hash::check($request->password, $user->password)){
             $user->password = Hash::make($request->newPassword);
             $user->save();

@@ -24,6 +24,7 @@ Route::post('register', 'LoginController@register');
 Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::get('profile', 'LoginController@profile');
     Route::get('logout', 'LoginController@logout');
+    Route::post('reset', 'LoginController@resetPassword');
     
     Route::post('setBlacklist', 'BlacklistController@set');
     Route::get('getBlacklist', 'BlacklistController@get');    

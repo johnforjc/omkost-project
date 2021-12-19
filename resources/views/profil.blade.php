@@ -42,21 +42,21 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6 mb-2">
                                                 <label>Password Lama</label>
-                                                <input type="password" class="form-control" value="">
+                                                <input type="password" class="form-control" value="" id="currentPassword">
                                             </div>
                                             
                                             <div class="col-md-6 mb-2">
                                                 <label>Password Baru</label>
-                                                <input type="password" class="form-control" value="">
+                                                <input type="password" class="form-control" value="" id="newPassword">
                                             </div>
                                             
                                             <div class="col-md-6 mb-2">
                                                 <label>Konfirmasi Password Baru</label>
-                                                <input type="password" class="form-control" value="">
+                                                <input type="password" class="form-control" value="" id="confirmPassword">
                                             </div>
                                         </div>
 
-                                        <button class="btn btn-theme bg-2 col" type="submit">Save Changes</button>
+                                        <button class="btn btn-theme bg-2 col" type="submit" onclick="resetPassword()">Save Changes</button>
                                         
                                     </div>
                                     
@@ -78,5 +78,35 @@
 
 	<script>
         $("#sbprofil").addClass("active");
+
+            
+        function resetPassword() {
+            let newPassword= $('#newPassword').val();
+            let confirmPassword = $('#confirmPassword').val();
+
+            if(newPassword != confirmPassword){
+                alert("Password yang dimasukkan tidak sama!");
+                return ;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "{{ url('/api/reset') }}",
+                dataType: "json",
+                headers: {
+                    Authorization: "Bearer {{ Cookie::get('api_token') }}"
+                },
+                data: {
+                    newPassword         : newPassword,
+                    password            : $('#currentPassword').val()
+                },
+                success: function(response) {
+                    alert(response.message);
+                },
+                error: function(err) {
+                    alert("Error, hubungi admin");
+                }
+            });
+        }
 	</script>
 @stop
