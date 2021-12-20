@@ -31,6 +31,7 @@ Route::get('/toko', 'TokoController@index');
 Route::get('/adminblacklist', 'BlacklistController@admin');
 Route::get('/admintoko', 'TokoController@admin');
 Route::get('/admintukang', 'TukangController@admin');
+// Route::get('/user/verify/{token}/{id}', 'LoginController@verifyEmail');
 
 //Route::get('/login', 'PageController@login');
 //Route::get('/tentang', 'PageController@tentang')->name('profile');

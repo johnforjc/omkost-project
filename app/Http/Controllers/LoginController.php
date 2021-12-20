@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Mail;
 
 class LoginController extends Controller
 {
@@ -74,9 +75,16 @@ class LoginController extends Controller
             'isAdmin'   => false,
         ]);
 
+        // $token = Hash::make($request['password'].$request['name']);
+
+        // $userVerify['token']=$token;
+        // $userVerify['id']   =$user->id;
+
         $response['status'] = true;
         $response['message'] = 'Registrasi Berhasil, Selamat bergabung di Omkost';
         $response['data']['token'] = $user->createToken('OmkostToken')->plainTextToken;
+
+        // Mail::to($user->email)->send(new VerifyUser($userVerify));
 
         return response()->json($response, 200);
         
@@ -98,7 +106,7 @@ class LoginController extends Controller
             
             return response()->json($response, 422);
         }
-        
+
         if(Hash::check($request->password, $user->password)){
             $user->password = Hash::make($request->newPassword);
             $user->save();
@@ -142,4 +150,15 @@ class LoginController extends Controller
 
         return response()->json($response, 200);
     }
+
+    // public function verifyEmail($token, $id){
+    //     $user = User::find($id);
+
+    //     if($user->newColumnForSaveToken == $token){
+    //         $user->validate_at = Carbon::now();
+    //         $user->save();
+
+    //         return view('/');
+    //     }
+    // }
 }
