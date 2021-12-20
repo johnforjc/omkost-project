@@ -181,6 +181,15 @@
             </div>
         </div>
     </section>
+
+    <div class="image-preview-container" id="toggle-image-preview" onclick="closeImage()">
+        <div class="close-btn" onclick="closeImage()">
+            X
+        </div>
+        <div id="image-element" class="image-preview-box">
+
+        </div>
+    </div>
 	@include('layouts.partial.footer')
 @endsection		
 
@@ -368,7 +377,7 @@
                                 for (let i = 0; i < data.length; i++) {
                                     html2 += `<tr>
                                                 <td class="dashboard_propert_wrapper">
-                                                    <img src="https://via.placeholder.com/1400x720" alt="">
+                                                    <img src="storage/${data[i].bukti}" alt="" onclick="showImage(${data[i].bukti})">
                                                     <div class="title">
                                                         <h3 id="spannama">${data[i].nama}</h3>
                                                         <h4><a href="#">${data[i].identitas}</a></h4>
@@ -423,7 +432,7 @@
                                 html2 += `<tr>
                                             <td class="dashboard_propert_wrapper">
                                             <div class="col-md-3">
-                                                <img src="storage/${data[i].bukti}" alt="">
+                                                <img src="storage/${data[i].bukti}" alt="" onclick="showImage('${data[i].bukti}')">
                                             </div>
                                                 <div class="title col-md-6">
                                                     <h3 id="spannama">${data[i].nama}</h3>
@@ -459,6 +468,21 @@
             });
 
             $("#blacklist").html(html2);
+        }
+
+        function showImage(imageSource){
+            $("#toggle-image-preview").toggleClass("active");
+
+            let image = `
+                <img src="storage/${imageSource}" alt="Bukti">
+            `
+            $("#image-element").html(image);
+        }
+
+        function closeImage(event){
+            if($("#toggle-image-preview").hasClass("active")){
+                $("#toggle-image-preview").toggleClass("active");
+            }
         }
 
         $('#exampleModal').on('show.bs.modal', function (event) {
