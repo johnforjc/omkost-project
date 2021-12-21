@@ -70,6 +70,8 @@
                                             
                                         </tbody>
                                     </table>
+
+                                    <div id="allToko" class="pagination-box"></div>
                                 </div>
 
                                 <div id = "tambahTokoSection" class = "align-items-left collapse">
@@ -122,6 +124,8 @@
                                             
                                         </tbody>
                                     </table>
+
+                                    <div id="ownerToko" class="pagination-box"></div>
                                 </div>
 
                                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -246,7 +250,6 @@
                     {
                         alert(response.message);
                         getMyToko();
-                        clearinput();
                     }
                     else
                     {
@@ -332,11 +335,11 @@
             });
         }
 
-        function getToko()
+        function getToko(page=1)
 		{
             $.ajax({
                 type  : 'GET',
-                url   : "{{ url('/api/getToko') }}",
+                url   : `{{ url('/api/getToko?page=${page}') }}`,
                 dataType : 'json',
                 headers: {
                     "Authorization" : "Bearer {{ Cookie::get('api_token') }}"
@@ -372,6 +375,8 @@
                         }
                         
                         $('#dttoko2').html(html);
+
+                        makePagination(result.current_page, result.last_page, 'getToko', "#allToko");
                     }
                     else
                     {
@@ -384,7 +389,7 @@
             });
         }
 
-        async function getMyToko() {
+        async function getMyToko(page=1) {
             // Check if input's length more than 5 character, then autosearch is on
             // This make the server not heavy query if the input is very short for auto search
 
@@ -395,7 +400,7 @@
             console.log(email)
             await $.ajax({
                 type: "GET",
-                url: "{{ url('/api/getToko') }}",
+                url: `{{ url('/api/getToko?page=${page}') }}`,
                 dataType: "json",
                 headers: {
                     Authorization: "Bearer {{ Cookie::get('api_token') }}"
@@ -404,10 +409,10 @@
                     email       : email
                 },
                 success: function(response) {
-                    let data = response.data;
-                    console.log(data);
+                    let result = response.data;
                     if (response.status) {
                         // Make sure the data of blacklist minimal 1
+                        let data = result.data;
                         if (data.length !== 0) {
                             for (let i = 0; i < data.length; i++) {
                                 html2 += `<tr>
@@ -434,6 +439,7 @@
                                             </td>
                                         </tr>`;
                             }
+                            makePagination(result.current_page, result.last_page, 'getMyToko', "#ownerToko");
                         } else {
                             // Give a feedback for user if doesnt exist data with input
                             html2 =

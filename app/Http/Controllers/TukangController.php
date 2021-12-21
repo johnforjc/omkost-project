@@ -57,9 +57,9 @@ class TukangController extends Controller
     {
         if($request->filled('status')){
             if($request['status'] == "belum"){
-                $tukang = Tukang::whereNull('validate_by')->get();
+                $tukang = Tukang::whereNull('validate_by')->paginate(5);
             } else {
-                $tukang = Tukang::whereNotNull('validate_by')->get();
+                $tukang = Tukang::whereNotNull('validate_by')->paginate(5);
             }
 
             return response()->json([
@@ -69,7 +69,7 @@ class TukangController extends Controller
         }
         else if($request->filled('email')){
             $tukang = Tukang::where('submit_by', 'like', '%'.request('email').'%')
-                                    ->get();
+                                    ->paginate(5);
 
             return response()->json([
                 'status'        => true,
@@ -86,7 +86,7 @@ class TukangController extends Controller
                                 ->where('kota', 'like', '%'.request('kota').'%')
                                 ->where('jenis', 'like', '%'.request('jenis').'%')
                                 ->whereNotNull('validate_by')
-                                ->get();
+                                ->paginate(5);
 
             $response['status'] = true;
             $response['message'] = 'Data Tukang diterima';

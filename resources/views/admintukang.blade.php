@@ -40,6 +40,7 @@
                                             </thead>
                                         </tbody>
                                     </table>
+                                    <div id="adminTukang" class="pagination-box"></div>
                                 </div>
 
                                 <!--
@@ -141,11 +142,11 @@
             });
         }
         
-        function getTukang()
+        function getTukang(page = 1)
 		{
             $.ajax({
                 type  : 'GET',
-                url   : "{{ url('/api/getTukang') }}",
+                url   : `{{ url('/api/getTukang?page=${page}') }}`,
                 dataType : 'json',
                 headers: {
                     "Authorization" : "Bearer {{ Cookie::get('api_token') }}"
@@ -154,10 +155,11 @@
                     status       :$('#statusTukang').val(),
                 },
                 success : function(response){
-                    let data = response.data;
+                    let result = response.data;
                     if(response.status)
                     {
                         let html = '';
+                        let data = result.data;
                         if(data.length == 0){
                             html = `<h3>Data tidak ditemukan</h3>`;
                         } else {
@@ -187,6 +189,8 @@
                         }
 
                         $('#dttukang2').html(html);
+
+                        makePagination(result.current_page, result.last_page, 'getTukang', "#adminTukang");
                     }
                     else
                     {

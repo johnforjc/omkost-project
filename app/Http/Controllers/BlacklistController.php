@@ -72,9 +72,9 @@ class BlacklistController extends Controller
     {
         if($request->filled('status')){
             if($request['status'] == "belum"){
-                $blacklist = Blacklist::whereNull('validate_by')->get();
+                $blacklist = Blacklist::whereNull('validate_by')->pagination(5);
             } else {
-                $blacklist = Blacklist::whereNotNull('validate_by')->get();
+                $blacklist = Blacklist::whereNotNull('validate_by')->pagination(5);
             }
 
             return response()->json([
@@ -85,7 +85,7 @@ class BlacklistController extends Controller
 
         if($request->filled('email')){
             $blacklist = Blacklist::where('submit_by', 'like', '%'.request('email').'%')
-                                    ->get();
+                                    ->paginate(5);
 
             return response()->json([
                 'status'        => true,
@@ -103,7 +103,7 @@ class BlacklistController extends Controller
             $blacklist = Blacklist::where('identitas', 'like', '%'.request('cari').'%')
                                 ->orWhere('nama', 'like', '%'.request('cari').'%')->where('jenis', 'like', request('jenis'))
                                 ->whereNotNull('validate_by')
-                                ->get();
+                                ->paginate(5);
 
             $response['status'] = true;
             $response['message'] = 'Data blacklist diterima';

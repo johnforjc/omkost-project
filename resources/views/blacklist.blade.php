@@ -62,6 +62,8 @@
                                             
                                         </tbody>
                                     </table>
+
+                                    <div id="allBlacklist" class="pagination-box"></div>
                                 </div>
 
 
@@ -122,7 +124,6 @@
                                             <tbody id="blacklist">
                                                 
                                             </tbody>
-
                                             <!-- Button trigger modal -->
                                             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
@@ -145,6 +146,9 @@
                                             </div>
                                             
                                         </table>
+
+                                        <div id="ownerBlacklist" class="pagination-box"></div>
+
                                     </div>
                                 </div>
                             </div>
@@ -349,7 +353,7 @@
             });
         }
 
-        async function getBlacklist() {
+        async function getBlacklist(page = 1) {
             // Check if input's length more than 5 character, then autosearch is on
             // This make the server not heavy query if the input is very short for auto search
 
@@ -360,7 +364,7 @@
                 // Make a async funtion for this fecth function from server
                 await $.ajax({
                     type: "GET",
-                    url: "{{ url('/api/getBlacklist') }}",
+                    url: `{{ url('/api/getBlacklist?page=${page}') }}`,
                     dataType: "json",
                     headers: {
                         Authorization: "Bearer {{ Cookie::get('api_token') }}"
@@ -370,9 +374,10 @@
                         cari: $("#cariNamaBlacklist").val()
                     },
                     success: function(response) {
-                        let data = response.data;
+                        let result = response.data;
                         if (response.status) {
                             // Make sure the data of blacklist minimal 1
+                            let data = result.data;
                             if (data.length !== 0) {
                                 for (let i = 0; i < data.length; i++) {
                                     html2 += `<tr>
@@ -387,6 +392,7 @@
                                                 </td>
                                             </tr>`;
                                 }
+                                makePagination(result.current_page, result.last_page, 'getBlacklist', "#allBlacklist");
                             } else {
                                 // Give a feedback for user if doesnt exist data with input
                                 html2 =
@@ -405,7 +411,7 @@
             $("#dtblacklist2").html(html2);
         }
 
-        async function getMyBlacklist() {
+        async function getMyBlacklist(page = 1) {
             // Check if input's length more than 5 character, then autosearch is on
             // This make the server not heavy query if the input is very short for auto search
 
@@ -415,7 +421,7 @@
 
             await $.ajax({
                 type: "GET",
-                url: "{{ url('/api/getBlacklist') }}",
+                url: `{{ url('/api/getBlacklist?page=${page}') }}`,
                 dataType: "json",
                 headers: {
                     Authorization: "Bearer {{ Cookie::get('api_token') }}"
@@ -424,9 +430,11 @@
                     email       : email
                 },
                 success: function(response) {
-                    let data = response.data;
+                    let result = response.data;
+                    console.log(result);
                     if (response.status) {
                         // Make sure the data of blacklist minimal 1
+                        let data = result.data;
                         if (data.length !== 0) {
                             for (let i = 0; i < data.length; i++) {
                                 html2 += `<tr>
@@ -453,6 +461,8 @@
                                             </td>
                                         </tr>`;
                             }
+
+                            makePagination(result.current_page, result.last_page, 'getMyBlacklist', "#ownerBlacklist");
                         } else {
                             // Give a feedback for user if doesnt exist data with input
                             html2 =

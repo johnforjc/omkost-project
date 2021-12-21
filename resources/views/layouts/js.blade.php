@@ -21,6 +21,7 @@
 <!-- Map -->
 <script src="https://maps.google.com/maps/api/js?key="></script>
 <script src="assets/js/map.js"></script>
+<script src="js/makePagination.js"></script>
 <!-- ============================================================== -->
 <!-- This page plugins -->
 <!-- ============================================================== -->

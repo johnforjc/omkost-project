@@ -67,6 +67,8 @@
                                             
                                         </tbody>
                                     </table>
+
+                                    <div id="allTukang" class="pagination-box"></div>
                                 </div>
 
                                 <div class="align-items-left collapse" id="tambahTukangSection">
@@ -115,6 +117,8 @@
                                             
                                         </tbody>
                                     </table>
+
+                                    <div id="ownerTukang" class="pagination-box"></div>
                                 </div>
                             </div>
                             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -255,11 +259,11 @@
             });
         }
 
-        function getTukang()
+        function getTukang(page = 1)
 		{
             $.ajax({
                 type  : 'GET',
-                url   : "{{ url('/api/getTukang') }}",
+                url   : `{{ url('/api/getTukang?page=${page}') }}`,
                 dataType : 'json',
                 headers: {
                     "Authorization" : "Bearer {{ Cookie::get('api_token') }}"
@@ -270,10 +274,11 @@
                     nama        :$('#cariNamaTukang').val(), 
                 },
                 success : function(response){
-                    let data = response.data;
+                    let result = response.data;
                     if(response.status)
                     {
                         let html = '';
+                        let data = result.data;
 
                         if(data.length == 0){
                             html = `<h3>Data tidak ditemukan</h3>`;
@@ -294,6 +299,9 @@
                         }
 
                         $('#dttukang2').html(html);
+
+                        makePagination(result.current_page, result.last_page, 'getTukang', "#allTukang");
+
                     }
                     else
                     {
@@ -306,7 +314,7 @@
             });
         }
 
-        async function getMyTukang() {
+        async function getMyTukang(page = 1) {
             // Check if input's length more than 5 character, then autosearch is on
             // This make the server not heavy query if the input is very short for auto search
 
@@ -317,7 +325,7 @@
             console.log(email)
             await $.ajax({
                 type: "GET",
-                url: "{{ url('/api/getTukang') }}",
+                url: `{{ url('/api/getTukang?page=${page}') }}`,
                 dataType: "json",
                 headers: {
                     Authorization: "Bearer {{ Cookie::get('api_token') }}"
@@ -326,9 +334,9 @@
                     email       : email
                 },
                 success: function(response) {
-                    let data = response.data;
-                    console.log(data);
+                    let result = response.data;
                     if (response.status) {
+                        let data = result.data;
                         // Make sure the data of blacklist minimal 1
                         if (data.length !== 0) {
                             for (let i = 0; i < data.length; i++) {
@@ -354,6 +362,8 @@
                                             </td>
                                         </tr>`;
                             }
+                        makePagination(result.current_page, result.last_page, 'getMyTukang', "#ownerTukang");
+
                         } else {
                             // Give a feedback for user if doesnt exist data with input
                             html2 =

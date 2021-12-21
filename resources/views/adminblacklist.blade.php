@@ -39,6 +39,8 @@
                                             
                                         </tbody>
                                     </table>
+
+                                    <div id="adminBlacklist" class="pagination-box"></div>
                                 </div>
                             </div>
                             <!-- Pagination -->
@@ -111,38 +113,7 @@
             });
         }
 
-        function deleteBlacklist(){
-            $.ajax({
-                type  : 'DELETE',
-                url   : "{{ url('/api/deleteBlacklist') }}",
-                dataType : 'json',
-                headers: {
-                    "Authorization" : "Bearer {{ Cookie::get('api_token') }}",
-                },
-                data: {
-                    id : '23'
-                },
-                success : function(response){
-                    let data = response.data;
-                    if(response.status)
-                    {
-                        alert(response.message);
-                        getBlacklist();
-                        clearinput();
-                    }
-                    else
-                    {
-                        alert(response.message);
-                    }
-                },
-                error: function(err){
-                    console.log("masuk sini")
-                    alert("Error, hubungi admin")
-                }
-            });
-        }
-
-        async function getStatusBlacklist() {
+        async function getStatusBlacklist(page = 1) {
             // Check if input's length more than 5 character, then autosearch is on
             // This make the server not heavy query if the input is very short for auto search
 
@@ -151,7 +122,7 @@
 
             await $.ajax({
                 type: "GET",
-                url: "{{ url('/api/getBlacklist') }}",
+                url: `{{ url('/api/getBlacklist?page=${page}') }}`,
                 dataType: "json",
                 headers: {
                     Authorization: "Bearer {{ Cookie::get('api_token') }}"
@@ -187,6 +158,7 @@
                                             </td>
                                         </tr>`;
                             }
+                            makePagination(result.current_page, result.last_page, 'getStatusBlacklist', "#adminBlacklist");
                         } else {
                             // Give a feedback for user if doesnt exist data with input
                             html2 =

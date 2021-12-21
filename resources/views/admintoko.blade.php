@@ -39,6 +39,8 @@
                                             
                                         </tbody>
                                     </table>
+
+                                    <div id="adminToko" class="pagination-box"></div>
                                 </div>
 
                                 <!--
@@ -139,11 +141,11 @@
             });
         }
 
-        function getToko()
+        function getToko(page = 1)
 		{
             $.ajax({
                 type  : 'GET',
-                url   : "{{ url('/api/getToko') }}",
+                url   : `{{ url('/api/getToko?page=${page}') }}`,
                 dataType : 'json',
                 headers: {
                     "Authorization" : "Bearer {{ Cookie::get('api_token') }}"
@@ -152,11 +154,12 @@
                    status    :$('#statusValidasi').val(),
                 },
                 success : function(response){
-                    let data = response.data;
+                    let result = response.data;
                     if(response.status)
                     {
                         //alert(response.message);
                         let html = '';
+                        let data = result.data;
                         if( data.length == 0 ){
                             html = `<h3>Data tidak ditemukan</h3>`
                         } else {
@@ -186,6 +189,8 @@
                         }
                         
                         $('#dttoko2').html(html);
+
+                        makePagination(result.current_page, result.last_page, 'getToko', "#adminToko");
                     }
                     else
                     {
