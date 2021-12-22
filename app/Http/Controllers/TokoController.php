@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Toko;
+use App\Notifications;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -130,6 +131,7 @@ class TokoController extends Controller
         $toko->keterangan   = $request->get('keterangan');
         $toko->validate_by  = null;
         $toko->validate_at  = null;
+        $toko->status_validasi = null;
         $toko->save();
 
         $response['status'] = true;
@@ -140,26 +142,46 @@ class TokoController extends Controller
 
     public function validateToko(Request $request){
         // validasi toko oleh admin
-        $user = Auth::user();
+                $user = Auth::user();
         
         if(!$user->isAdmin){
             $response["status"] = false;
             $response["message"] = 'Maaf, anda tidak berhak untuk melakukan validasi';
             return response()->json($response, 401);
         }
-        
+
         $request->validate([
             'id' => 'required'
         ]); 
 
         $toko = Toko::find($request->id);
+        $keterangan = '';
+        $status = '';
 
-        $toko->validate_at = Carbon::now();
-        $toko->validate_by = $user->email;
+        if($request->keterangan){
+            $toko->status_validasi = 2;
+            $keterangan = $request->keterangan;
+            $status = "Ditolak";
+        } else {
+            $toko->validate_at = Carbon::now();
+            $toko->validate_by = $user->email;
+            $toko->status_validasi = 1;
+            $keterangan = "Data sudah berhasil divalidasi";
+            $status = "Diterima";
+        }
+
+        Notifications::create([
+            'validation_status'     => $status,
+            'jenis_validation'      => "Toko",
+            'keterangan'            => $keterangan,
+            'email_user_rekomendasi'=> $toko->submit_by,
+            'id_item_rekomendasi'   => $request->id,
+        ]);
+
         $toko->save();
 
         $response['status'] = true;
-        $response["message"] = 'Data telah divalidasi';
+        $response["message"] = 'Perubahan telah disimpan';
 
         return response()->json($response, 201);
     }

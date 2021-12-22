@@ -76,6 +76,12 @@
             </div>
         </div>
     </section>
+
+    <div class="reject-container" id="reject-box">
+        <div id="reject-content" class="reject-content-box">
+
+        </div>
+    </div>
 	@include('layouts.partial.footer')
 @endsection		
 
@@ -113,6 +119,72 @@
             });
         }
 
+        function showBox(id){
+            $("#reject-box").toggleClass("active");
+
+            let html = `
+                <div class="row mb-3">
+                    <h6>Beri feedback kepada user mengapa data masih belum layak</h6>
+                </div>
+                <div class="simple-input mb-3">
+                    <select id="keteranganTolak" class="form-control">
+                        <option value="Gambar kurang jelas">Gambar kurang jelas</option>
+                        <option value="Toko tidak ada">Toko tidak ada</option>
+                        <option value="Alamat tidak ada">Alamat tidak sesuai</option>
+                        <option value="Nomor telpon tidak ada">Nomor telpon tidak sesuai</option>
+                    </select>
+                </div>
+
+                <div class="row d-flex align-content-center justify-content-end">
+                    <div class="col-sm-3 btn-danger p-2 mr-2 text-center" onclick="closeBox()">
+                        Batal
+                    </div>
+
+                    <div class="col-sm-3 bg-blue button-primary p-2 text-center" style="color:white"onclick="tolakBlacklist(${id})">
+                        Kirim Penolakan
+                    </div>
+                </div>
+            `;
+
+            $("#reject-content").html(html);
+        }
+
+        function closeBox(event){
+            if($("#reject-box").hasClass("active")){
+                $("#reject-box").toggleClass("active");
+            }
+        }
+
+        function tolakBlacklist(id){
+            $.ajax({
+                type  : 'PUT',
+                url   : "{{ url('/api/validateBlacklist') }}",
+                dataType : 'json',
+                headers: {
+                    "Authorization" : "Bearer {{ Cookie::get('api_token') }}",
+                },
+                data: {
+                    id : id,
+                    keterangan : $('#keteranganTolak').val()
+                },
+                success : function(response){
+                    let data = response.data;
+                    if(response.status)
+                    {
+                        alert(response.message);
+                        getBlacklist();
+                    }
+                    else
+                    {
+                        alert(response.message);
+                    }
+                },
+                error: function(err){
+                    alert("Error, hubungi admin")
+                }
+            });
+        }
+
         async function getStatusBlacklist(page = 1) {
             // Check if input's length more than 5 character, then autosearch is on
             // This make the server not heavy query if the input is very short for auto search
@@ -131,9 +203,10 @@
                     status  : $('#validasiStatus').val()
                 },
                 success: function(response) {
-                    let data = response.data;
+                    let result = response.data;
                     if (response.status) {
                         // Make sure the data of blacklist minimal 1
+                        let data = result.data;
                         if (data.length !== 0) {
                             for (let i = 0; i < data.length; i++) {
                                 html2 += `<tr>
@@ -152,6 +225,9 @@
                                                     : 
                                                 `<div class="col-md-3">
                                                     <div class="btn btn-primary" onclick="validateBlacklist(${data[i].id})">Validasi</div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="btn btn-primary" onclick="showBox(${data[i].id})">Tolak</div>
                                                 </div>`
                                             }
                                                 

@@ -1,4 +1,5 @@
-.image-preview-container {
+.image-preview-container,
+.reject-container {
     position: fixed;
     top: 0;
     left: 0;
@@ -9,10 +10,18 @@
     z-index: 9998;
 }
 
-.image-preview-container.active {
+.image-preview-container.active,
+.reject-container.active {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.reject-container .reject-content-box {
+    width: 50%;
+    min-width: 320px;
+    padding: 4em 2em;
+    background-color: #fff;
 }
 
 .image-preview-container .image-preview-box {

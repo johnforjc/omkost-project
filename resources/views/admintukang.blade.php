@@ -104,6 +104,12 @@
             </div>
         </div>
     </section>
+
+    <div class="reject-container" id="reject-box">
+        <div id="reject-content" class="reject-content-box">
+
+        </div>
+    </div>
 	@include('layouts.partial.footer')
 @endsection		
 
@@ -112,6 +118,42 @@
 
 	<script>
         $("#sbtukang").addClass("active");
+
+        function showBox(id){
+            $("#reject-box").toggleClass("active");
+
+            let html = `
+                <div class="row mb-3">
+                    <h6>Beri feedback kepada user mengapa data masih belum layak</h6>
+                </div>
+                <div class="simple-input mb-3">
+                    <select id="keteranganTolak" class="form-control">
+                        <option value="Gambar kurang jelas">Gambar kurang jelas</option>
+                        <option value="Toko tidak ada">Toko tidak ada</option>
+                        <option value="Alamat tidak ada">Alamat tidak sesuai</option>
+                        <option value="Nomor telpon tidak ada">Nomor telpon tidak sesuai</option>
+                    </select>
+                </div>
+
+                <div class="row d-flex align-content-center justify-content-end">
+                    <div class="col-sm-3 btn-danger p-2 mr-2 text-center" onclick="closeBox()">
+                        Batal
+                    </div>
+
+                    <div class="col-sm-3 bg-blue button-primary p-2 text-center" style="color:white"onclick="tolakTukang(${id})">
+                        Kirim Penolakan
+                    </div>
+                </div>
+            `;
+
+            $("#reject-content").html(html);
+        }
+
+        function closeBox(event){
+            if($("#reject-box").hasClass("active")){
+                $("#reject-box").toggleClass("active");
+            }
+        }
 
         function validateTukang(id){
             $.ajax({
@@ -123,6 +165,36 @@
                 },
                 data: {
                     id : id
+                },
+                success : function(response){
+                    let data = response.data;
+                    if(response.status)
+                    {
+                        alert(response.message);
+                        getTukang();
+                    }
+                    else
+                    {
+                        alert(response.message);
+                    }
+                },
+                error: function(err){
+                    alert("Error, hubungi admin")
+                }
+            });
+        }
+
+        function tolakTukang(id){
+            $.ajax({
+                type  : 'PUT',
+                url   : "{{ url('/api/validateTukang') }}",
+                dataType : 'json',
+                headers: {
+                    "Authorization" : "Bearer {{ Cookie::get('api_token') }}",
+                },
+                data: {
+                    id : id,
+                    keterangan : $('#keteranganTolak').val()
                 },
                 success : function(response){
                     let data = response.data;
@@ -180,6 +252,9 @@
                                                     : 
                                                 `<div class="col-md-3">
                                                     <div class="btn btn-primary" onclick="validateTukang(${data[i].id})">Validasi</div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="btn btn-primary" onclick="showBox(${data[i].id})">Tolak</div>
                                                 </div>`
                                             }
                                                 

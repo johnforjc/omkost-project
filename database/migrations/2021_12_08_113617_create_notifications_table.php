@@ -18,8 +18,8 @@ class CreateNotificationsTable extends Migration
             $table->string('validation_status');
             $table->string('jenis_validation');
             $table->string('keterangan');
-            $table->integer('id_user_rekomendasi');
-            $table->integer('id_rekomendasi');      
+            $table->string('email_user_rekomendasi');
+            $table->integer('id_item_rekomendasi');      
             $table->timestamps();
         });
     }

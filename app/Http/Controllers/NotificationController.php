@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Notifications;
 use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
     //
-    public function set(Request $request)
+    public function set($status, $keterangan, $jenis, $email, $id)
     {
         $user = Auth::user();
 
@@ -15,22 +16,14 @@ class NotificationController extends Controller
             $response['status']     = false;
             $response['message']    = 'Anda tidak berhak melakukan operasi ini';
             return response()->json($response, 401);
-        }
-        
-        $request->validate([
-            'status'                => 'required',
-            'jenis'                 => 'required',
-            'keterangan'            => 'required',
-            'userRekomendasi'       => 'required',
-            'rekomendasiItem'       => 'required',
-        ]);   
+        } 
 
         Notifications::create([
-            'jenis_validation'      => $request['jenis'],
-            'validation_status'     => $request['status'],
-            'id_rekomendasi'        => $request['rekomendasiItem'],
-            'id_user_rekomendasi'   => $request['userRekomendasi'],
-            'keterangan'            => $request['keterangan'],
+            'validation_status'     => $id,
+            'jenis_validation'      => $jenis,
+            'keterangan'            => $keterangan,
+            'email_user_rekomendasi'=> $email,
+            'id_item_rekomendasi'   => $id,
         ]);
     }
 

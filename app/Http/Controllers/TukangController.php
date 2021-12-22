@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Tukang;
+use App\Notifications;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -124,6 +125,7 @@ class TukangController extends Controller
         $tukang->keterangan = $request['keterangan'];
         $tukang->validate_by  = null;
         $tukang->validate_at  = null;
+        $tukang->status_validasi = null;
         
         $tukang->save();
 
@@ -148,13 +150,33 @@ class TukangController extends Controller
         ]); 
 
         $tukang = Tukang::find($request->id);
+        $keterangan = '';
+        $status = '';
 
-        $tukang->validate_at = Carbon::now();
-        $tukang->validate_by = $user->email;
+        if($request->keterangan){
+            $tukang->status_validasi = 2;
+            $keterangan = $request->keterangan;
+            $status = "Ditolak";
+        } else {
+            $tukang->validate_at = Carbon::now();
+            $tukang->validate_by = $user->email;
+            $tukang->status_validasi = 1;
+            $keterangan = "Data sudah berhasil divalidasi";
+            $status = "Diterima";
+        }
+
+        Notifications::create([
+            'validation_status'     => $status,
+            'jenis_validation'      => "Tukang",
+            'keterangan'            => $keterangan,
+            'email_user_rekomendasi'=> $tukang->submit_by,
+            'id_item_rekomendasi'   => $request->id,
+        ]);
+
         $tukang->save();
 
         $response['status'] = true;
-        $response["message"] = 'Data telah divalidasi';
+        $response["message"] = 'Perubahan telah disimpan';
 
         return response()->json($response, 201);
     }

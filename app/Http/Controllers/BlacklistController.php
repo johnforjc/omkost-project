@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Blacklist;
+use App\Notifications;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -72,9 +73,9 @@ class BlacklistController extends Controller
     {
         if($request->filled('status')){
             if($request['status'] == "belum"){
-                $blacklist = Blacklist::whereNull('validate_by')->pagination(5);
+                $blacklist = Blacklist::whereNull('status_validasi')->paginate(5);
             } else {
-                $blacklist = Blacklist::whereNotNull('validate_by')->pagination(5);
+                $blacklist = Blacklist::where('status_validasi', 1)->paginate(5);
             }
 
             return response()->json([
@@ -145,6 +146,7 @@ class BlacklistController extends Controller
         $blacklist->bukti = $filename;
         $blacklist->validate_by  = null;
         $blacklist->validate_at  = null;
+        $blacklist->status_validasi = null;
         $blacklist->save();
 
         $response['status'] = true;
@@ -169,13 +171,33 @@ class BlacklistController extends Controller
         ]); 
 
         $blacklist = Blacklist::find($request->id);
+        $keterangan = '';
+        $status = '';
 
-        $blacklist->validate_at = Carbon::now();
-        $blacklist->validate_by = $user->email;
+        if($request->keterangan){
+            $blacklist->status_validasi = 2;
+            $keterangan = $request->keterangan;
+            $status = "Ditolak";
+        } else {
+            $blacklist->validate_at = Carbon::now();
+            $blacklist->validate_by = $user->email;
+            $blacklist->status_validasi = 1;
+            $keterangan = "Data sudah berhasil divalidasi";
+            $status = "Diterima";
+        }
+
+        Notifications::create([
+            'validation_status'     => $status,
+            'jenis_validation'      => "Blacklist",
+            'keterangan'            => $keterangan,
+            'email_user_rekomendasi'=> $blacklist->submit_by,
+            'id_item_rekomendasi'   => $request->id,
+        ]);
+
         $blacklist->save();
 
         $response['status'] = true;
-        $response["message"] = 'Data telah divalidasi';
+        $response["message"] = 'Perubahan telah disimpan';
 
         return response()->json($response, 201);
     }

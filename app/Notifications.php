@@ -12,7 +12,7 @@ class Notifications extends Model
      * @var array
      */
     protected $fillable = [
-        'validation_status', 'jenis_validation', 'keterangan', 'id_user_rekomendasi', 'id_rekomendasi'
+        'validation_status', 'jenis_validation', 'keterangan', 'email_user_rekomendasi', 'id_item_rekomendasi'
     ];
 
 
