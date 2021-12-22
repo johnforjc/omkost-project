@@ -382,7 +382,7 @@
                                 for (let i = 0; i < data.length; i++) {
                                     html2 += `<tr>
                                                 <td class="dashboard_propert_wrapper">
-                                                    <img src="storage/${data[i].bukti}" alt="" onclick="showImage(${data[i].bukti})">
+                                                    <img src="storage/${data[i].bukti}" alt="" onclick="showImage('${data[i].bukti}')">
                                                     <div class="title">
                                                         <h3 id="spannama">${data[i].nama}</h3>
                                                         <h4><a href="#">${data[i].identitas}</a></h4>
