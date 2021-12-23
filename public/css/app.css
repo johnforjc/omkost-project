@@ -79,3 +79,15 @@
     max-height: 150px;
     overflow: hidden;
 }
+
+.notifikasi-accepted {
+    width: 100%;
+    border-left: solid 5px #00ff00;
+    background-color: #ccffcc;
+}
+
+.notifikasi-declined {
+    width: 100%;
+    border-left: solid 5px #ff1e00;
+    background-color: #ffdad5;
+}

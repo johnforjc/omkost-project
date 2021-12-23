@@ -12,9 +12,9 @@
                         <div class="dashboard-wraper">
                             <h3>Notifikasi</h3>
 
-                            <table id="notification">
+                            <div id="notification" class="ml-4">
 
-                            </table>
+                            </div>
 
                             <div id="notificationPagination" class="pagination-box"></div>
                         </div>
@@ -61,13 +61,16 @@
                         let data = result.data;
                         if (data.length !== 0) {
                             for (let i = 0; i < data.length; i++) {
-                                html2 += `<tr>
-                                            <td class="dashboard_propert_wrapper">
+                                html2 += `<div class="row mb-2">
+                                            <div class="col-12 py-2 ${data[i].validation_status.toLowerCase() == "Diterima".toLowerCase()? "notifikasi-accepted" : "notifikasi-declined"}">
                                                 <div class="title col-12">
                                                     <h3 id="spannama">Data ${data[i].jenis_validation} anda telah ${data[i].validation_status}</h3>
                                                 </div>
-                                            </td>
-                                        </tr>`;
+                                                <div class="content col-12">
+                                                    Lihat Data
+                                                </div>
+                                            </div>
+                                        </div>`;
                             }
 
                             makePagination(result.current_page, result.last_page, 'getNotifikasi', "#notificationPagination");
