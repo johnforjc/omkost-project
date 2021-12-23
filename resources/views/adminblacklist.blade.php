@@ -218,7 +218,7 @@
                                                     <span>Telp : ${data[i].telp}</span>
                                                     <span>Keterangan : ${data[i].keterangan}</span>
                                                 </div>
-                                                ${data[i].validate_at ?
+                                                ${data[i].validate_by ?
                                                 `<div class="col-md-3">
                                                     <div class="btn btn-primary">Validated</div>
                                                 </div>`

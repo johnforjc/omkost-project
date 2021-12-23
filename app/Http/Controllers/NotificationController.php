@@ -2,12 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use App\Notifications;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
     //
+
+    public function index(){
+        return view('notification');
+    }
+
     public function set($status, $keterangan, $jenis, $email, $id)
     {
         $user = Auth::user();
@@ -28,16 +35,16 @@ class NotificationController extends Controller
     }
 
 
-    public function get()
+    public function get(Request $request)
     {
         $user = Auth::user();
 
-        $notifikasi = Notifications::where('id_user_rekomendasi', '=', $user->id)
-                                    ->get();
+        $notifikasi = Notifications::where('email_user_rekomendasi', 'like' , '%'.$user->email.'%')
+                                    ->paginate(10);
 
         $response['status'] = true;
-        $response['data'] = $notifikasi;
+        $response["data"] = $notifikasi;
 
-        return response()->json($response, 200);
+        return response()->json($response, 201);
     }
 }

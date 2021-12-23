@@ -102,8 +102,9 @@ class BlacklistController extends Controller
             ]);
 
             $blacklist = Blacklist::where('identitas', 'like', '%'.request('cari').'%')
-                                ->orWhere('nama', 'like', '%'.request('cari').'%')->where('jenis', 'like', request('jenis'))
-                                ->whereNotNull('validate_by')
+                                ->orWhere('nama', 'like', '%'.request('cari').'%')
+                                ->where('jenis', 'like', request('jenis'))
+                                ->where('status_validasi', 1)
                                 ->paginate(5);
 
             $response['status'] = true;

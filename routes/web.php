@@ -21,6 +21,7 @@ Route::get('/','PageController@home');
 Route::get('/dashboard', 'PageController@dashboard');
 Route::get('/admindashboard', 'PageController@admin');
 Route::get('/profil', 'PageController@profil');
+Route::get('/notification', 'NotificationController@index');
 Route::get('/iklan', 'PageController@iklan');
 Route::get('/manajemen', 'PageController@manajemen');
 

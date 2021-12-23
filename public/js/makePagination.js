@@ -20,13 +20,19 @@ function makePagination(current, last, functionName, idPagination) {
                             ${arrPage[i]}
                         </div>
                     `;
-            continue;
+        } else if (arrPage[i] == "...") {
+            elementPagination += `
+                <div class="pagination">
+                    ${arrPage[i]}
+                </div>
+            `;
+        } else {
+            elementPagination += `
+                <div class="pagination" onclick="${functionName}(${arrPage[i]})">
+                    ${arrPage[i]}
+                </div>
+            `;
         }
-        elementPagination += `
-                    <div class="pagination" onclick="${functionName}(${arrPage[i]})">
-                        ${arrPage[i]}
-                    </div>
-                `;
     }
 
     $(idPagination).html(elementPagination);

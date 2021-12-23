@@ -64,7 +64,7 @@ class TokoController extends Controller
             if($request['status'] == "belum"){
                 $toko = Toko::whereNull('validate_by')->paginate(5);
             } else {
-                $toko = Toko::whereNotNull('validate_by')->paginate(5);
+                $toko = Toko::where('status_validasi', 1)->paginate(5);
             }
 
             return response()->json([
@@ -91,7 +91,7 @@ class TokoController extends Controller
             $toko = Toko::where('nama', 'like', '%'.request('nama').'%')
                     ->where('kota', 'like', '%'.request('kota').'%')
                     ->where('jenis', 'like', '%'.request('jenis').'%')
-                    ->whereNotNull('validate_by')
+                    ->where('status_validasi', 1)
                     ->paginate(5);
 
             $response['status'] = true;

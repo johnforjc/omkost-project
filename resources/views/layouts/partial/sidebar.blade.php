@@ -17,6 +17,7 @@
                         <ul>
                             <li id="sbdashboard" class=""><a href="{{ url('/dashboard') }}"><i class="ti-dashboard"></i>Dashboard</a></li>
                             <li id="sbprofil"><a href="{{ url('/profil') }}"><i class="ti-user"></i>Profil</a></li>
+                            <li id="sbnotifikasi"><a href="{{ url('/notification') }}"><i class="ti-user"></i>Notification</a></li>
                             <li id="sbblacklist"><a href="{{ url('/blacklist') }}"><i class="ti-target"></i>Blacklist</a></li>
                             <li id="sbtukang"><a href="{{ url('/tukang') }}"><i class="ti-view-list-alt"></i>Tukang</a></li>
                             <li id="sbtoko"><a href="{{ url('/toko') }}"><i class="ti-view-list-alt"></i>Toko</a></li>

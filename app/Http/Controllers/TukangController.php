@@ -60,7 +60,7 @@ class TukangController extends Controller
             if($request['status'] == "belum"){
                 $tukang = Tukang::whereNull('validate_by')->paginate(5);
             } else {
-                $tukang = Tukang::whereNotNull('validate_by')->paginate(5);
+                $tukang = Tukang::where('status_validasi', 1)->paginate(5);
             }
 
             return response()->json([
@@ -86,7 +86,7 @@ class TukangController extends Controller
             $tukang = Tukang::where('nama', 'like', '%'.request('nama').'%')
                                 ->where('kota', 'like', '%'.request('kota').'%')
                                 ->where('jenis', 'like', '%'.request('jenis').'%')
-                                ->whereNotNull('validate_by')
+                                ->where('status_validasi', 1)
                                 ->paginate(5);
 
             $response['status'] = true;

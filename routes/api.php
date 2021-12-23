@@ -43,4 +43,5 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::put('updateToko', 'TokoController@update');
     Route::delete('deleteToko', 'TokoController@delete');
     Route::get('getToko', 'TokoController@get');
+    Route::get('getNotification', 'NotificationController@get');
 });
