@@ -211,26 +211,30 @@
                             for (let i = 0; i < data.length; i++) {
                                 html2 += `<tr>
                                             <td class="dashboard_propert_wrapper" class="row">
-                                                <img src="storage/${data[i].bukti}" alt="" onclick="showImage('${data[i].bukti}')">
-                                                <div class="title col-md-6">
-                                                    <h3 id="spannama">${data[i].nama}</h3>
-                                                    <h4><a href="#">${data[i].identitas}</a></h4>
-                                                    <span>Telp : ${data[i].telp}</span>
-                                                    <span>Keterangan : ${data[i].keterangan}</span>
-                                                </div>
-                                                ${data[i].validate_by ?
-                                                `<div class="col-md-3">
-                                                    <div class="btn btn-primary">Validated</div>
-                                                </div>`
-                                                    : 
-                                                `<div class="col-md-3">
-                                                    <div class="btn btn-primary" onclick="validateBlacklist(${data[i].id})">Validasi</div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="btn btn-primary" onclick="showBox(${data[i].id})">Tolak</div>
-                                                </div>`
-                                            }
+                                                <div class="col">
+                                                    <div class="row mb-2 align-content-center">
+                                                        <div class="col-md-3">
+                                                            <img src="storage/${data[i].bukti}" alt="" onclick="showImage('${data[i].bukti}')" class="image-icon">
+                                                        </div>
+                                                        <div class="title col-md-9">
+                                                            <h3 id="spannama">${data[i].nama}</h3>
+                                                            <h4><a href="#">${data[i].identitas}</a></h4>
+                                                            <span>Telp : ${data[i].telp}</span>
+                                                            <span>Keterangan : ${data[i].keterangan}</span>
+                                                        </div>
+                                                    </div>
                                                 
+                                                ${data[i].validate_by ?
+                                                ``
+                                                    : 
+                                                `
+                                                <div class="row d-flex justify-content-lg-around align-content-center">
+                                                    <div class="btn btn-primary" onclick="validateBlacklist(${data[i].id})">Validasi</div>
+                                                    <div class="btn btn-primary" onclick="showBox(${data[i].id})">Tolak</div>
+                                                </div>
+                                                `
+                                            }
+                                                </div>
                                             </td>
                                         </tr>`;
                             }

@@ -382,7 +382,7 @@
                                 for (let i = 0; i < data.length; i++) {
                                     html2 += `<tr>
                                                 <td class="dashboard_propert_wrapper">
-                                                    <img src="storage/${data[i].bukti}" alt="" onclick="showImage('${data[i].bukti}')">
+                                                    <img src="storage/${data[i].bukti}" alt="" onclick="showImage('${data[i].bukti}')" class="image-icon">
                                                     <div class="title">
                                                         <h3 id="spannama">${data[i].nama}</h3>
                                                         <h4><a href="#">${data[i].identitas}</a></h4>
@@ -439,24 +439,28 @@
                             for (let i = 0; i < data.length; i++) {
                                 html2 += `<tr>
                                             <td class="dashboard_propert_wrapper">
-                                            <div class="col-md-3">
-                                                <img src="storage/${data[i].bukti}" alt="" onclick="showImage('${data[i].bukti}')">
-                                            </div>
-                                                <div class="title col-md-6">
-                                                    <h3 id="spannama">${data[i].nama}</h3>
-                                                    <h4><a href="#">${data[i].identitas}</a></h4>
-                                                    <span>Telp : ${data[i].telp}</span>
-                                                    <span>Keterangan : ${data[i].keterangan}</span>
-                                                </div>
+                                                <div class="col">
+                                                    <div class="row mb-2 align-content-center">
+                                                        <div class="col-md-3">
+                                                            <img src="storage/${data[i].bukti}" alt="" onclick="showImage('${data[i].bukti}')" class="image-icon">
+                                                        </div>
+                                                        <div class="title col-md-9">
+                                                            <h3 id="spannama">${data[i].nama}</h3>
+                                                            <h4><a href="#">${data[i].identitas}</a></h4>
+                                                            <span>Telp : ${data[i].telp}</span>
+                                                            <span>Keterangan : ${data[i].keterangan}</span>
+                                                        </div>
+                                                    </div>
                                                 
-                                                <div class="col-md-3">
-                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-mode="update" data-nama="${data[i].nama}"
-                                                    data-id="${data[i].id}" data-keterangan="${data[i].keterangan}" data-telpon="${data[i].telp}" data-identitas="${data[i].identitas}" data-kota="${data[i].kota}">
-                                                    Update
-                                                    </button>
-                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-mode="delete" data-id="${data[i].id}">
-                                                    Delete
-                                                    </button>
+                                                    <div class="row d-flex justify-content-lg-around align-content-center">
+                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-mode="update" data-nama="${data[i].nama}"
+                                                        data-id="${data[i].id}" data-keterangan="${data[i].keterangan}" data-telpon="${data[i].telp}" data-identitas="${data[i].identitas}" data-kota="${data[i].kota}">
+                                                        Update
+                                                        </button>
+                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-mode="delete" data-id="${data[i].id}">
+                                                        Delete
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>`;

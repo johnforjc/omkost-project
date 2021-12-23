@@ -417,25 +417,26 @@
                             for (let i = 0; i < data.length; i++) {
                                 html2 += `<tr>
                                             <td class="dashboard_propert_wrapper" class="row">
-                                                <img class="col-md-3" src="https://via.placeholder.com/1400x720" alt="">
-                                                <div class="title col-md-6">
-                                                    <h3 id="spannama">${data[i].nama}</h3>
-                                                    <h4><a href="#">${data[i].telp}</a></h4>
-                                                    <span>${data[i].alamat},${data[i].kota}</span>
-                                                    <span>Keterangan :${data[i].keterangan}</span>
-                                                    <span>${data[i].validate_at ? "Sudah Validasi" : "Belum Tervalidasi"}</span>
+                                                <div class="col">
+                                                    <div class="row mb-2 align-content-center">
+                                                        <div class="title col-12">
+                                                            <h3 id="spannama">${data[i].nama}</h3>
+                                                            <h4><a href="#">${data[i].telp}</a></h4>
+                                                            <span>${data[i].alamat},${data[i].kota}</span>
+                                                            <span>Keterangan :${data[i].keterangan}</span>
+                                                            <span>${data[i].validate_at ? "Sudah Validasi" : "Belum Tervalidasi"}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row d-flex justify-content-lg-around align-content-center">
+                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-mode="update" data-nama="${data[i].nama}"
+                                                        data-id="${data[i].id}" data-keterangan="${data[i].keterangan}" data-telpon="${data[i].telp}" data-alamat="${data[i].alamat}" data-kota="${data[i].kota}">
+                                                        Update
+                                                        </button>
+                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-mode="delete" data-id="${data[i].id}">
+                                                        Delete
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                                <div class="col-md-3">
-                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-mode="update" data-nama="${data[i].nama}"
-                                                    data-id="${data[i].id}" data-keterangan="${data[i].keterangan}" data-telpon="${data[i].telp}" data-alamat="${data[i].alamat}" data-kota="${data[i].kota}">
-                                                    Update
-                                                    </button>
-                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-mode="delete" data-id="${data[i].id}">
-                                                    Delete
-                                                    </button>
-                                                </div>
-                                            
-                                                
                                             </td>
                                         </tr>`;
                             }

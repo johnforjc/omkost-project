@@ -74,3 +74,8 @@
     background: deepskyblue;
     color: #fff;
 }
+
+.image-icon {
+    max-height: 150px;
+    overflow: hidden;
+}

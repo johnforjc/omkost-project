@@ -238,25 +238,24 @@
                             for(let i=0; i<data.length; i++){
                                 html += `<tr>
                                             <td class="dashboard_propert_wrapper" class="row">
-                                                <img class="col-md-3" src="https://via.placeholder.com/1400x720" alt="">
-                                                <div class="title col-md-6">
-                                                    <h3 id="spannama">${data[i].nama}</h3>
-                                                    <h4><a href="#">${data[i].telp}</a></h4>
-                                                    <span>Kota : ${data[i].kota}</span>
-                                                    <span>Keterangan :${data[i].keterangan}</span>
+                                                <div class="col">
+                                                    <div class="row mb-2 align-content-center">
+                                                        <div class="title col">
+                                                            <h3 id="spannama">${data[i].nama}</h3>
+                                                            <h4><a href="#">${data[i].telp}</a></h4>
+                                                            <span>Kota : ${data[i].kota}</span>
+                                                            <span>Keterangan :${data[i].keterangan}</span>
+                                                        </div>
+                                                    </div>
+                                                    ${data[i].validate_by ?
+                                                    ``
+                                                        : 
+                                                    `<div class="row d-flex justify-content-lg-around align-content-center">
+                                                        <div class="btn btn-primary" onclick="validateTukang(${data[i].id})">Validasi</div>
+                                                        <div class="btn btn-primary" onclick="showBox(${data[i].id})">Tolak</div>
+                                                    </div>`
+                                                    }
                                                 </div>
-                                                ${data[i].validate_by ?
-                                                `<div class="col-md-3">
-                                                    <div class="btn btn-primary">Validated</div>
-                                                </div>`
-                                                    : 
-                                                `<div class="col-md-3">
-                                                    <div class="btn btn-primary" onclick="validateTukang(${data[i].id})">Validasi</div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="btn btn-primary" onclick="showBox(${data[i].id})">Tolak</div>
-                                                </div>`
-                                            }
                                                 
                                             </td>
                                         </tr>`
