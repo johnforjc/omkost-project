@@ -181,6 +181,15 @@ class TukangController extends Controller
         return response()->json($response, 201);
     }
 
+    public function read(Request $request){
+        $tukang = Tukang::find($request->id);
+
+        $response['status'] = true;
+        $response['data'] = $tukang;
+
+        return response()->json($response, 200);
+    }
+
     public function delete(Request $request)
     {
         //  validasi user adalah user yang merekomendasikan tukang

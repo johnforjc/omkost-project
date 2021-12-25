@@ -91,3 +91,7 @@
     border-left: solid 5px #ff1e00;
     background-color: #ffdad5;
 }
+
+.cursor-pointer {
+    cursor: pointer;
+}

@@ -186,6 +186,15 @@ class TokoController extends Controller
         return response()->json($response, 201);
     }
 
+    public function read(Request $request){
+        $toko = Toko::find($request->id);
+
+        $response['status'] = true;
+        $response['data'] = $toko;
+
+        return response()->json($response, 200);
+    }
+
     public function delete(Request $request)
     {
         //  validasi user adalah user yang merekomendasikan toko

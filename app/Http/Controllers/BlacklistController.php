@@ -67,7 +67,14 @@ class BlacklistController extends Controller
 
         return response()->json($response, 200);
     }
+    public function read(Request $request){
+        $blacklist = Blacklist::find($request->id);
 
+        $response['status'] = true;
+        $response['data'] = $blacklist;
+
+        return response()->json($response, 200);
+    }
 
     public function get(Request $request)
     {
