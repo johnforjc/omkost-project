@@ -87,6 +87,224 @@
             $("#notification").html(html2);
         }
 
+        function updateFormBlacklist(){
+            let data = JSON.parse(localStorage.getItem('dataOverlay'));
+            console.log(data);
+
+            let html = `
+                <div class="row mb-3">
+                    <h6>Data Blacklist</h6>
+                </div>
+                <div class="simple-input mb-3 row">
+                    <div class="col-md-6">
+                        <h5>Nama</h5>
+                        <input value="${data.nama}" id="updateNamaBlacklist" class="form-control" type="text">
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Identitas</h5>
+                        <input value="${data.identitas}" id="updateIdentitasBlacklist" class="form-control" type="text">
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Kota</h5>
+                        <input value="${data.kota}" id="updateKotaBlacklist" class="form-control" type="text">
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Telpon</h5>
+                        <input value="${data.telp}" id="updateTelponBlacklist" class="form-control" type="text">
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Keterangan</h5>
+                        <input value="${data.keterangan}" id="updateKeteranganBlacklist" class="form-control" type="text">
+                    </div>
+                    <div class="col-md-6">
+                        <h5>BUkti</h5>
+                        <input id="updateBuktiBlacklist" class="form-control" type="file">
+                    </div>
+                </div>
+
+                <div class="row d-flex align-content-center justify-content-end">
+                    <div class="col-sm-3 btn-danger p-2 mr-2 text-center" onclick="closeBox()">
+                        Tutup
+                    </div>
+
+                    <div class="col-sm-3 bg-blue button-primary p-2 text-center" style="color:white" onclick="updateBlacklist(${data.id})">
+                        Simpan Perubahan
+                    </div>
+                </div>
+            `;
+            $("#overlay-content").html(html);
+        }
+
+        function updateFormToko(){
+            let data = JSON.parse(localStorage.getItem('dataOverlay'));
+            console.log(data);
+
+            let html = `
+                <div class="row mb-3">
+                    <h6>Data Blacklist</h6>
+                </div>
+                <div class="simple-input mb-3 row">
+                    <div class="col-md-6">
+                        <h5>Nama</h5>
+                        <input value="${data.nama}" id="updateNama" class="form-control" type="text">
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Alamat</h5>
+                        <input value="${data.alamat}" id="updateAlamat" class="form-control" type="text">
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Kota</h5>
+                        <input value="${data.kota}" id="updateKota" class="form-control" type="text">
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Telpon</h5>
+                        <input value="${data.telp}" id="updateTelpon" class="form-control" type="text">
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Keterangan</h5>
+                        <input value="${data.keterangan}" id="updateKeterangan" class="form-control" type="text">
+                    </div>
+                </div>
+
+                <div class="row d-flex align-content-center justify-content-end">
+                    <div class="col-sm-3 btn-danger p-2 mr-2 text-center" onclick="closeBox()">
+                        Tutup
+                    </div>
+
+                    <div class="col-sm-3 bg-blue button-primary p-2 text-center" style="color:white" onclick="updateToko(${data.id})">
+                        Simpan Perubahan
+                    </div>
+                </div>
+            `;
+            $("#overlay-content").html(html);
+        }
+
+        function updateFormTukang(){
+            let data = JSON.parse(localStorage.getItem('dataOverlay'));
+            console.log(data);
+
+            let html = `
+                <div class="row mb-3">
+                    <h6>Data Blacklist</h6>
+                </div>
+                <div class="simple-input mb-3 row">
+                    <div class="col-md-6">
+                        <h5>Nama</h5>
+                        <input value="${data.nama}" id="updateNama" class="form-control" type="text">
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Kota</h5>
+                        <input value="${data.kota}" id="updateKota" class="form-control" type="text">
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Telpon</h5>
+                        <input value="${data.telp}" id="updateTelpon" class="form-control" type="text">
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Keterangan</h5>
+                        <input value="${data.keterangan}" id="updateKeterangan" class="form-control" type="text">
+                    </div>
+                </div>
+
+                <div class="row d-flex align-content-center justify-content-end">
+                    <div class="col-sm-3 btn-danger p-2 mr-2 text-center" onclick="closeBox()">
+                        Tutup
+                    </div>
+
+                    <div class="col-sm-3 bg-blue button-primary p-2 text-center" style="color:white" onclick="updateTukang(${data.id})">
+                        Simpan Perubahan
+                    </div>
+                </div>
+            `;
+            $("#overlay-content").html(html);
+        }
+
+        function updateToko(id)
+		{
+            $.ajax({
+                type  : 'PUT',
+                url   : "{{ url('/api/updateToko') }}",
+                dataType : 'json',
+                headers: {
+                    "Authorization" : "Bearer {{ Cookie::get('api_token') }}"
+                },
+                data : {
+                    id          :id,
+                    kota        :$('#updateKota').val(), 
+                    nama        :$('#updateNama').val(), 
+                    telp        :$('#updateTelpon').val(),
+                    alamat      :$('#updateAlamat').val(),
+                    keterangan  :$('#updateKeterangan').val()
+                },
+                success : function(response){
+                    //let data = response.data;
+                    if(response.status)
+                    {
+                        alert(response.message);
+                        closeBox();
+                        clearinput();
+                    }
+                    else
+                    {
+                        alert(response.message);
+                    }
+                },
+                error: function(err){
+                    alert("Error, hubungi admin")
+                }
+            });
+        }
+
+        function updateBlacklist(id){
+            let formData = new FormData();
+
+            let file = $('#updateBuktiBlacklist')[0].files[0];
+
+            console.log(file);
+            if(file) formData.append('bukti', file);
+
+            formData.append('id', `${id}`);
+            formData.append('kota', $('#updateKotaBlacklist').val());
+            formData.append('identitas', $('#updateIdentitasBlacklist').val());
+            formData.append('nama', $('#updateNamaBlacklist').val());
+            formData.append('telp', $('#updateTelponBlacklist').val());
+            formData.append('keterangan', $('#updateKeteranganBlacklist').val());
+
+            for (let pair of formData.entries()) {
+                console.log(pair[0]+ ', ' + pair[1]); 
+            }  
+            
+            $.ajax({
+                type  : 'POST',
+                url   : "{{ url('/api/updateBlacklist') }}",
+                dataType : 'json',
+                headers: {
+                    "Authorization" : "Bearer {{ Cookie::get('api_token') }}",
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data    : formData,
+                cache: false,
+                processData: false,  // tell jQuery not to process the data
+                contentType: false,  // tell jQuery not to set contentType
+                async: false,
+                success : function(response){
+                    let data = response.data;
+                    if(response.status)
+                    {
+                        alert(response.message);
+                        closeBox();
+                    }
+                    else
+                    {
+                        alert(response.message);
+                    }
+                },
+                error: function(err){
+                    alert("Error, hubungi admin")
+                }
+            });
+        }
+
         function readData(jenis, id){
             let url, html;
             jenis = jenis.toLowerCase()
@@ -142,7 +360,7 @@
                                     Tutup
                                 </div>
 
-                                <div class="col-sm-3 bg-blue button-primary p-2 text-center" style="color:white"onclick="tolakToko(${id})">
+                                <div class="col-sm-3 bg-blue button-primary p-2 text-center" style="color:white"onclick="updateFormBlacklist()">
                                     Update
                                 </div>
                             </div>
@@ -180,7 +398,7 @@
                                     Tutup
                                 </div>
 
-                                <div class="col-sm-3 bg-blue button-primary p-2 text-center" style="color:white"onclick="tolakToko(${id})">
+                                <div class="col-sm-3 bg-blue button-primary p-2 text-center" style="color:white"onclick="updateFormTukang(${id})">
                                     Update
                                 </div>
                             </div>
@@ -222,14 +440,14 @@
                                     Tutup
                                 </div>
 
-                                <div class="col-sm-3 bg-blue button-primary p-2 text-center" style="color:white"onclick="tolakToko(${id})">
+                                <div class="col-sm-3 bg-blue button-primary p-2 text-center" style="color:white"onclick="updateFormToko()">
                                     Update
                                 </div>
                             </div>
                         `;
                     }
 
-                    
+                    localStorage.setItem('dataOverlay', JSON.stringify(data));
 
                     $("#overlay-content").html(html);
                 },
@@ -239,9 +457,45 @@
             });
        }
 
+       function updateTukang(id)
+		{
+            $.ajax({
+                type  : 'PUT',
+                url   : "{{ url('/api/updateTukang') }}",
+                dataType : 'json',
+                headers: {
+                    "Authorization" : "Bearer {{ Cookie::get('api_token') }}"
+                },
+                data : {
+                    id          :id,
+                    kota        :$('#updateKota').val(), 
+                    nama        :$('#updateNama').val(), 
+                    telp        :$('#updateTelpon').val(),
+                    keterangan  :$('#updateKeterangan').val()
+                },
+                success : function(response){
+                    //let data = response.data;
+                    if(response.status)
+                    {
+                        alert(response.message);
+                        closeBox();
+                        clearinput();
+                    }
+                    else
+                    {
+                        alert(response.message);
+                    }
+                },
+                error: function(err){
+                    alert("Error, hubungi admin")
+                }
+            });
+        }
+
        function closeBox(event){
             if($("#overlay-box").hasClass("active")){
                 $("#overlay-box").toggleClass("active");
+                localStorage.removeItem('dataOverlay');
             }
         }
 	</script>
