@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Mail\VerifyUser;
+use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -66,6 +69,8 @@ class LoginController extends Controller
             
             return response()->json($response, 422);
         }
+
+        $token = Str::random(40);
         
         $user = User::create([
             'name'      => $request['name'],
@@ -73,18 +78,17 @@ class LoginController extends Controller
             'email'     => $request['email'],
             'password'  => Hash::make($request['password']),
             'isAdmin'   => false,
+            'verifToken'=> $token,
         ]);
 
-        // $token = Hash::make($request['password'].$request['name']);
-
-        // $userVerify['token']=$token;
-        // $userVerify['id']   =$user->id;
+        $data["token"]=$token;
+        $data["id"]=$user->id;
 
         $response['status'] = true;
         $response['message'] = 'Registrasi Berhasil, Selamat bergabung di Omkost';
         $response['data']['token'] = $user->createToken('OmkostToken')->plainTextToken;
 
-        // Mail::to($user->email)->send(new VerifyUser($userVerify));
+        Mail::to($request->email)->send(new VerifyUser($data));
 
         return response()->json($response, 200);
         
@@ -151,14 +155,14 @@ class LoginController extends Controller
         return response()->json($response, 200);
     }
 
-    // public function verifyEmail($token, $id){
-    //     $user = User::find($id);
+    public function verifyEmail($token, $id){
+        $user = User::find($id);
 
-    //     if($user->newColumnForSaveToken == $token){
-    //         $user->validate_at = Carbon::now();
-    //         $user->save();
+        if($user->verifToken == $token){
+            $user->email_verified_at = Carbon::now();
+            $user->save();
 
-    //         return view('/');
-    //     }
-    // }
+            return redirect('/');
+        }
+    }
 }

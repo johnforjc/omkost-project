@@ -25,6 +25,7 @@
             },
             error: function(err){
                 alert("Login Error, hubungi admin")
+                console.log(err);
             }
         });
     }

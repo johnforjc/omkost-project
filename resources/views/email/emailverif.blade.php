@@ -8,6 +8,9 @@
     <br/>
     Your registered this email on Omkost Site. Please click on the below link to verify your email account.
     <br/>
-    <a href="{{url('user/verify', $userVerify->token, $userVerify->id)}}">Verify Email</a>
+    <div>
+      
+      <a href={{$link}}>Verifikasi Sekarang</a>
+    </div>
   </body>
 </html>
